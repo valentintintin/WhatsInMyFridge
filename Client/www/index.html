@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>WhatsInMyFridge?</title>
+
+    <style>
+      ul {
+        display: flex;
+      }
+    </style>
+
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="cordova.js"></script>
+  </head>
+  <body ng-app="App">
+    <h1>WhatsInMyFridge ?</h1>
+    <div ng-controller="productsCtrl">
+      <h2>Products</h2>
+      <div id="listProducts">
+        <h3>Fridge</h3>
+        <ul>
+          <li ng-repeat="(name, p) in products">
+            <label>
+              <img src="{{p.image}}"/>
+              {{p.name}} <b>Qty: {{p.qty}}</b>
+            </label>
+            <input type="button" value="-" ng-click="setQty(p, true)"/>
+            <input type="button" value="+" ng-click="setQty(p, false)"/>
+          </li>
+        </ul>
+        <form ng-submit="add()">
+          <input type="text" ng-model="codeProduct" value="3521042206511" autofocus ng-touchend="startScan()"/>
+          <input type="submit" value="Ajouter"/>
+        </form>
+      </div>
+      <div id="listProductsToBuy">
+        <h3>Market <i>Qty: {{productsToBuy.length}}</i></h3>
+        <ul>
+          <li ng-repeat="(name, p) in productsToBuy">
+            <label>
+              <img src="{{p.image}}"/>
+              {{p.name}} <b>Qty: {{p.qty}}</b>
+            </label>
+            <input type="button" value="-" ng-click="setQtyToBuy(p, true)"/>
+            <input type="button" value="+" ng-click="setQtyToBuy(p, false)"/>
+          </li>
+        </ul>
+        <form ng-submit="addToBuy()">
+          <input type="text" ng-model="codeProductToBuy" ng-touchend="startScanBuy()"/>
+          <input type="submit" value="Ajouter"/>
+        </form>
+      </div>
+    </div>
+    <div ng-controller="menusCtrl">
+      <div id="listMenu">
+        <h3>Menus:</h3>
+        <div ng-repeat="m in menus">
+          <fieldset>
+            <legend>{{m.date}}</legend>
+            <ul>
+              <li ng-repeat="(name, d) in m.dish">
+                <label>
+                  <img src="{{d.product.image}}"/>
+                    {{d.product.name}}
+                  <b>Qty: {{d.qty}}</b>
+                </label>
+                <input type="button" value="-" ng-click="d.minus()"/>
+                <input type="button" value="+" ng-click="d.plus()"/>
+                <input type="button" value="X" ng-click="m.remove(d)"/>
+              </li>
+              <li>
+                <select ng-model="productIndexToAdd" required>
+                  <option selected ng-repeat="pp in products" value="{{pp.code}}">{{pp.name}}</option>
+                </select>
+                <input type="submit" value="Ajouter" ng-click="m.add(products[productIndexToAdd])"/>
+              </li>
+            </ul>
+            <input type="button" value="Supprimer" ng-click="removeMenu(m)"/>
+          </fieldset>
+        </div>
+      </div>
+      <div id="newMenu">
+        <fieldset>
+          <legend>New</legend>
+          <form ng-submit="addNewMenu()">
+            <label for="dateMenu">Date:</label>
+            <input type="text" id="dateMenu" ng-model="dateMenu" required/>
+            <input type="submit" value="Ajouter"/>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+
+    <script src="lib/ngtouch/build/ngTouch.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/services/datas.js"></script>
+    <script src="js/controllers/products.js"></script>
+    <script src="js/controllers/menus.js"></script>
+  </body>
+</html>
