@@ -1,0 +1,25 @@
+body {
+  background-color: #ECEFF1; }
+
+.card.horizontal .card-image {
+  width: 20vw; }
+
+.card.horizontal .card-content > .header {
+  margin-top: 0; }
+
+.collection {
+  border: 1px solid #e0e0e0; }
+  .collection .collection-item {
+    margin: 10px 0 10px 0;
+    padding-left: 72px;
+    min-height: 60px; }
+    .collection .collection-item img {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      left: 15px; }
+    .collection .collection-item .title {
+      font-size: 16px;
+      display: inline-block;
+      max-width: 80%;
+      word-wrap: break-word; }

@@ -8,6 +8,8 @@
     "angular-touch": "^1.5.8",
     "angular-route": "^1.5.8",
     "angular": "^1.5.8",
-    "ngtouch": "^1.0.1"
+    "ngtouch": "^1.0.1",
+    "cordova": "^3.4.0",
+    "materialize": "^0.97.7"
   }
 }

@@ -1,3 +1,3 @@
-var app = angular.module('App', ['ionic', 'ngTouch']);
+var app = angular.module('App', ['ngTouch']);
 
-var URL_SERVER = "http://77.204.229.132:3000/api/";
+var URL_SERVER = "http://77.204.229.132:80/api/";

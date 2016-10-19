@@ -4,37 +4,87 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>WhatsInMyFridge?</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"  media="screen,projection"/>
 
-    <style>
-      ul {
-        display: flex;
-      }
-    </style>
-
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <script src="cordova.js"></script>
+    <!--<script src="cordova.js"></script>-->
   </head>
   <body ng-app="App">
-    <h1>WhatsInMyFridge ?</h1>
-    <div ng-controller="productsCtrl">
-      <h2>Products</h2>
-      <div id="listProducts">
-        <h3>Fridge</h3>
-        <ul>
-          <li ng-repeat="(name, p) in products">
-            <label>
-              <img src="{{p.image}}"/>
-              {{p.name}} <b>Qty: {{p.qty}}</b>
-            </label>
-            <input type="button" value="-" ng-click="setQty(p, true)"/>
-            <input type="button" value="+" ng-click="setQty(p, false)"/>
-          </li>
+    <header>
+      <section class="navbar-fixed">
+        <nav>
+          <div class="nav-wrapper">
+            <a href="#" data-activates="slide-out" class="button-collapse left"><i class="material-icons">menu</i></a>
+            <a href="#!" class="brand-logo center"><i class="material-icons">local_drink</i></a>
+          </div>
+        </nav>
+      </section>
+    </header>
+    
+    <aside>
+      <secion>
+        <ul id="slide-out" class="side-nav">
+          <li><div class="userView">
+            <!--<img class="background" src="images/office.jpg">
+            <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+            <a href="#!name"><span class="white-text name">John Doe</span></a>
+            <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>-->
+          </div></li>
+          <li><a class="waves-effect" href=""><i class="material-icons">kitchen</i>Fridge</a></li>
+          <li><a class="waves-effect" href=""><i class="material-icons">shopping_cart</i>To buy</a></li>
+          <li><a class="waves-effect" href=""><i class="material-icons">restaurant_menu</i>Menus</a></li>
         </ul>
-        <form ng-submit="add()">
-          <input type="text" ng-model="codeProduct" value="3521042206511" autofocus ng-touchend="startScan()"/>
-          <input type="submit" value="Ajouter"/>
-        </form>
-      </div>
+      </section>
+    </aside>
+    
+    <main>
+      <secion ng-controller="productsCtrl">
+        <div class="row col s12 m7">
+          <cardproduct from="fridge" />
+        </div>
+        <!--<div class="row">
+          <div class="col s12">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">Add a product</span>
+                <form class="row" ng-submit="add()">
+                  <div class="input-field col s8">
+                    <i class="material-icons prefix">search</i>
+                    <input placeholder="3521042206511" id="codeProduct" type="text" class="validate" autofocus ng-touchend="startScan()">
+                    <label for="codeProduct">Code EAN</label>
+                  </div>
+                  <div class="col s4">
+                    <input class="waves-effect waves-light btn" type="submit" value="Ajouter"/>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>-->
+      </secion>
+    </main>
+    
+    <footer>
+      
+    </footer>
+    
+    <div >
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <!--
       <div id="listProductsToBuy">
         <h3>Market <i>Qty: {{productsToBuy.length}}</i></h3>
         <ul>
@@ -92,8 +142,15 @@
         </fieldset>
       </div>
     </div>
-
+-->
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/materialize/dist/js/materialize.min.js"></script>
+    
+    <script src="lib/angular/angular.min.js"></script>
     <script src="lib/ngtouch/build/ngTouch.min.js"></script>
+    
+    <script type="text/javascript" src="js/style.js"></script>
+    
     <script src="js/app.js"></script>
     <script src="js/models.js"></script>
     <script src="js/services/datas.js"></script>

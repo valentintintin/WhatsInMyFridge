@@ -1,3 +1,12 @@
+app.directive('cardproduct', function() {
+	return {
+		restric: 'E',
+		templateUrl: 'views/cardsProduct.html',
+		replace: true,
+		
+	};	
+});
+
 app.factory('Product', function($http) {
 	function Product(code, qty = 1, market, name, image) {
 		this.code = code;

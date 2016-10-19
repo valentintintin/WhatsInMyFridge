@@ -1,0 +1,36 @@
+.card.horizontal {
+    .card-image {
+        width: 20vw;
+    }
+    
+    .card-content > .header {
+        margin-top: 0;
+    }
+}
+
+.collection {
+    border: 1px solid #e0e0e0;
+    
+    .collection-item {
+        margin: 10px 0 10px 0;
+        padding-left: 72px;
+        
+        min-height: 60px;
+        
+        img {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            left: 15px;
+        }
+        
+        .title {
+            font-size: 16px;
+            
+            display: inline-block;
+            max-width: 80%;
+            
+            word-wrap: break-word;
+        }
+    }
+}
