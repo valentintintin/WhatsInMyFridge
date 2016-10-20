@@ -1,9 +1,12 @@
-app.directive('cardproduct', function() {
+app.directive('listproducts', function() {
 	return {
 		restric: 'E',
-		templateUrl: 'views/cardsProduct.html',
 		replace: true,
-		
+		scope: {
+			from: '@products',
+			products: '=',
+		},
+		templateUrl: 'views/listProducts.html'
 	};	
 });
 

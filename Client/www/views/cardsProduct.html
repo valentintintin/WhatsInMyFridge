@@ -1,8 +1,0 @@
- <ul class="collection">
-  <li class="collection-item" ng-repeat="(name, p) in products">
-    <img src="{{p.image}}" alt="{{p.name}}">
-    <span class="title">{{p.name}}</span>
-    <input class="secondary-content" type="button" value="-" ng-click="setQty(p, true)"/>
-    <input class="secondary-content" type="button" value="+" ng-click="setQty(p, false)"/>
-  </li>
-</ul>

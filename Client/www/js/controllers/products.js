@@ -1,5 +1,6 @@
 app.controller("productsCtrl", function($scope, Datas, Product){
 	$scope.products = Datas.products;
+	$scope.fridge = $scope.products;
 	$scope.productsToBuy = Datas.productsToBuy;
 
   $scope.startScan = function() {
