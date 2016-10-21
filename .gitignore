@@ -1,8 +1,8 @@
-Server/.idea/
+.idea/
+
 Server/node_modules/
 Server/db.db/
 
-Client/.idea/
 Client/node_modules/
 Client/www/lib/
 Client/platforms/

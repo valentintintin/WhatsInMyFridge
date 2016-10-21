@@ -26,22 +26,35 @@
     <aside>
       <secion>
         <ul id="slide-out" class="side-nav">
-          <li><div class="userView">
-            <!--<img class="background" src="images/office.jpg">
-            <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-            <a href="#!name"><span class="white-text name">John Doe</span></a>
-            <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>-->
-          </div></li>
-          <li><a class="waves-effect" href=""><i class="material-icons">kitchen</i>Fridge</a></li>
-          <li><a class="waves-effect" href=""><i class="material-icons">shopping_cart</i>To buy</a></li>
-          <li><a class="waves-effect" href=""><i class="material-icons">restaurant_menu</i>Menus</a></li>
+          <li>
+            <div class="userView">
+              <!--<img class="background" src="images/office.jpg">
+              <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+              <a href="#!name"><span class="white-text name">John Doe</span></a>
+              <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>-->
+            </div>
+          </li>
+          <li>
+            <a class="waves-effect" href=""><i class="material-icons">kitchen</i>Fridge</a>
+          </li>
+          <li>
+            <a class="waves-effect" href=""><i class="material-icons">shopping_cart</i>To buy</a></li>
+          <li>
+            <a class="waves-effect" href=""><i class="material-icons">restaurant_menu</i>Menus</a>
+          </li>
         </ul>
       </section>
     </aside>
     
     <main>
       <section ng-controller="productsCtrl">
-        <listproducts products="fridge"/></listproducts>
+        <listproducts from="market" /></listproducts>
+        <listproducts from="fridge" /></listproducts>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+          <a class="btn-floating btn-large waves-effect waves-light add"><i class="large material-icons">add</i></a>
+        </div>
+        <!--
         <div class="row col s12">
           <div class="card">
             <div class="card-content">
@@ -58,7 +71,7 @@
               </form>
             </div>
           </div>
-        </div>
+        </div>-->
       </section>
     </main>
     
@@ -141,12 +154,12 @@
 -->
     <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="lib/materialize/dist/js/materialize.min.js"></script>
-    
+
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/ngtouch/build/ngTouch.min.js"></script>
-    
+
     <script type="text/javascript" src="js/style.js"></script>
-    
+
     <script src="js/app.js"></script>
     <script src="js/models.js"></script>
     <script src="js/services/datas.js"></script>

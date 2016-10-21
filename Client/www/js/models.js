@@ -3,10 +3,11 @@ app.directive('listproducts', function() {
 		restric: 'E',
 		replace: true,
 		scope: {
-			from: '@products',
-			products: '=',
+			from: '@'
 		},
-		templateUrl: 'views/listProducts.html'
+		templateUrl: 'views/listProducts.html',
+		controller: 'productsCtrl',
+		controllerAs: 'ctrl'
 	};	
 });
 
