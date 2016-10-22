@@ -1,1 +1,16 @@
-/* Empty. Add your own CSS if you like */
+.item {
+    white-space: normal;
+}
+
+
+button.ion-minus-circled, button.ion-minus-circled:hover {
+    color: red;
+}
+
+button.ion-plus-circled, button.ion-plus-circled:hover {
+    color: green;
+}
+
+.item-button-right > button:last-child {
+    top: 50px;
+}

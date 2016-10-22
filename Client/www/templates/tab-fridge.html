@@ -3,7 +3,8 @@
     <ion-list>
       <ion-item ng-repeat="p in chats" class="item-thumbnail-left item-button-right">
         <img ng-src="{{p.image}}">
-        <h2>{{p.name}}</h2>
+        {{p.name}}
+        <span class="badge badge-light">{{p.qty}}</span>
         <button on-release="onRelease()" class="button button-icon icon ion-minus-circled"></button>
         <button on-release="onRelease()" class="button button-icon icon ion-plus-circled"></button>
       </ion-item>
