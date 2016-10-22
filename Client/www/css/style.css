@@ -1,6 +1,13 @@
 body {
   background-color: #ECEFF1; }
 
+.navbar-fixed {
+  height: 97px; }
+
+.tabs a i.material-icons {
+  padding-right: 0.35em;
+  font-size: 1.2em; }
+
 .add, .add:hover {
   background-color: green; }
 

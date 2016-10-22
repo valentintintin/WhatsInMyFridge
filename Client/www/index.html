@@ -16,15 +16,25 @@
       <section class="navbar-fixed">
         <nav>
           <div class="nav-wrapper">
-            <a href="#" data-activates="slide-out" class="button-collapse left"><i class="material-icons">menu</i></a>
-            <a href="#!" class="brand-logo center"><i class="material-icons">local_drink</i>Fridge</a>
+              <a href="#" data-activates="slide-out" class="button-collapse left"><i class="material-icons">menu</i></a>
+              <a href="#!" class="brand-logo center">What's in my fridge?</a>
           </div>
+          <ul class="tabs">
+            <li class="tab col s4">
+              <a class="waves-effect waves-light active" href="#fridge"><i class="material-icons">kitchen</i>Fridge</a>
+            </li>
+            <li class="tab col s4">
+              <a class="waves-effect waves-light" href="#market"><i class="material-icons">shopping_cart</i>Market</a></li>
+            <li class="tab col s4 disabled">
+              <a class="waves-effect waves-light" href="#menus"><i class="material-icons">restaurant_menu</i>Menus</a>
+            </li>
+          </ul>
         </nav>
       </section>
     </header>
-    
+
     <aside>
-      <secion>
+      <section>
         <ul id="slide-out" class="side-nav">
           <li>
             <div class="userView">
@@ -37,23 +47,30 @@
           <li>
             <a class="waves-effect" href=""><i class="material-icons">kitchen</i>Fridge</a>
           </li>
-          <li>
-            <a class="waves-effect" href=""><i class="material-icons">shopping_cart</i>To buy</a></li>
-          <li>
-            <a class="waves-effect" href=""><i class="material-icons">restaurant_menu</i>Menus</a>
-          </li>
         </ul>
       </section>
     </aside>
-    
-    <main>
-      <section ng-controller="productsCtrl">
-        <listproducts from="market" /></listproducts>
-        <listproducts from="fridge" /></listproducts>
 
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-          <a class="btn-floating btn-large waves-effect waves-light add"><i class="large material-icons">add</i></a>
-        </div>
+    <main>
+      <section>
+        <article ng-controller="productsCtrl" id="fridge">
+          <listproducts from="fridge" /></listproducts>
+
+          <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large waves-effect waves-light add"><i class="large material-icons">add</i></a>
+          </div>
+        </article>
+        <article ng-controller="productsCtrl" id="market">
+          <listproducts from="market" /></listproducts>
+
+          <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large waves-effect waves-light add"><i class="large material-icons">add</i></a>
+          </div>
+        </article>
+        <article ng-controller="menusCtrl" id="menus">
+
+        </article>
+      </section>
         <!--
         <div class="row col s12">
           <div class="card">
