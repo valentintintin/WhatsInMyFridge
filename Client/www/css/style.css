@@ -1,16 +1,22 @@
-.item {
-    white-space: normal;
-}
-
-
-button > .remove, button > .remove:hover {
+button.remove > md-icon, button.remove > md-icon:hover {
     color: red;
 }
 
-button > .add, button > .add:hover {
+button.add > md-icon, button.add > md-icon:hover {
     color: green;
 }
 
-.item-button-right > button:last-child {
-    top: 50px;
+list md-list md-list-item .md-list-item-text h3 {
+    word-wrap: normal;
 }
+
+button.fixed {
+    position: fixed;
+    bottom: 35px;
+    right: 24px;
+}
+
+md-list {
+    padding: 0;
+}
+
