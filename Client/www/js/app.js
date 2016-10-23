@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngMaterial'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -31,26 +31,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
+  .state('fridge', {
+    url: '/fridge',
+    templateUrl: 'templates/fridge.html',
+    controller: 'DashCtrl'
   })
 
-  // Each tab has its own nav history stack:
+  .state('market', {
+    url: '/market',
+    templateUrl: 'templates/market.html',
+    controller: 'DashCtrl'
+  })
 
-  .state('tab.fridge', {
-    url: '/fridge',
-    views: {
-      'tab-fridge': {
-        templateUrl: 'templates/tab-fridge.html',
-        controller: 'DashCtrl'
-      }
-    }
+  .state('menus', {
+    url: '/menus',
+    templateUrl: 'templates/menus.html',
+    controller: 'DashCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/fridge');
+  $urlRouterProvider.otherwise('/fridge');
 
 });

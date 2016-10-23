@@ -3,11 +3,11 @@
 }
 
 
-button.ion-minus-circled, button.ion-minus-circled:hover {
+button > .remove, button > .remove:hover {
     color: red;
 }
 
-button.ion-plus-circled, button.ion-plus-circled:hover {
+button > .add, button > .add:hover {
     color: green;
 }
 

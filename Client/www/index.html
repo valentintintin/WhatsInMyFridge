@@ -16,7 +16,8 @@
       }
     </script>-->
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="lib/angular-material/angular-material.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
@@ -25,6 +26,9 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-material/angular-material.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -34,19 +38,38 @@
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
   </head>
-  <body ng-app="starter">
+  <body ng-app="starter" ng-cloak>
     <!--
       The nav bar that will be updated as we navigate between views.
-    -->
-    <ion-nav-bar class="bar-stable" align-title="center">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-    </ion-nav-bar>
+
+    <ion-nav-bar class="bar-positive nav-bar-container" nav-swipe nav-bar-transition="android" nav-bar-direction="none">
+      <div class="nav-bar-block" nav-bar="active">
+        <ion-header-bar class="bar-assertive bar bar-header disable-user-behavior" align-title="center">
+          <button class="button back-button hide buttons no-text button-clear header-item" ng-click="$ionicGoBack($event)">
+            <i class="icon ion-ios-arrow-back"></i>
+        </ion-header-bar>
+      </div>
+    </ion-nav-bar>-->
+
+    <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar _md _md-toolbar-transitions">
+      <div class="md-toolbar-tools">
+          <h3>What's in my fridge?</h3>
+      </div>
+    </md-toolbar>
+
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-sref="fridge" name="fridge">Fridge</md-nav-item>
+      <md-nav-item md-nav-sref="market" name="market">Market</md-nav-item>
+      <md-nav-item md-nav-sref="menus" name="menus">Menus</md-nav-item>
+    </md-nav-bar>
+    <md-content class="padding">
+      <ion-nav-view></ion-nav-view>
+    </md-content>
     <!--
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
-    -->
-    <ion-nav-view></ion-nav-view>
+
+
   </body>
 </html>
