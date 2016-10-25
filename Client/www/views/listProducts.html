@@ -6,11 +6,11 @@
             <p>{{ p.qty }}</p>
         </div>
 
-        <md-button ng-click="" aria-label="Remove one" class="md-secondary md-icon-button remove">
-            <md-icon>remove_circle</md-icon>
+        <md-button class="md-fab md-mini md-secondary remove" ng-click="setQty(p, true)" aria-label="Remove one">
+            <md-icon>remove_cricle</md-icon>
         </md-button>
-        <md-button ng-click="" aria-label="Add one" class="md-secondary md-icon-button add">
-            <md-icon>add_circle</md-icon>
+        <md-button class="md-fab md-mini md-secondary add" ng-click="setQty(p, false)" aria-label="Add one">
+            <md-icon>add_cricle</md-icon>
         </md-button>
         <md-divider></md-divider>
     </md-list-item>

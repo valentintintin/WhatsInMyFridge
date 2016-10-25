@@ -10,6 +10,21 @@ angular.module('App.controllers', [])
         $scope.addProduct = function() {
             alert(startScan());
         }
+        
+        $scope.setQty = function(product, minus) {
+            if (minus) {
+                if (product.minus()) {
+                    if (confirm("Buy again ?")) {
+                        product.qty = 1;
+                        product.setMarket(true);
+                        Datas.productsToBuy[product.code] = product;
+                    }
+
+                    product.deleteFromDb();
+                    delete Datas.products[product.code];
+                }
+            } else product.plus();
+        }
     }])
 
     .controller('MarketCtrl', ['$scope', 'Datas', 'Product', function ($scope, Datas, Product) {

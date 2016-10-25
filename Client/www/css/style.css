@@ -1,13 +1,21 @@
-button.remove > md-icon, button.remove > md-icon:hover {
-    color: red;
+button.remove {
+    background-color: red !important;
+}
+
+button.remove > md-icon {
+    color: white !important;
+}
+
+button.add {
+    background-color: green !important;
 }
 
 button.add > md-icon, button.add > md-icon:hover {
-    color: green;
+    color: white !important;
 }
 
-list md-list md-list-item .md-list-item-text h3 {
-    word-wrap: normal;
+md-list md-list-item .md-list-item-text > h3 {
+    white-space: normal !important;
 }
 
 .md-button.md-fab.fixed {
