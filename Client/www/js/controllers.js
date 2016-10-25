@@ -1,13 +1,36 @@
-angular.module('starter.controllers', [])
+angular.module('App.controllers', [])
 
-.controller('DashCtrl', ['$scope', 'Chats', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+    .controller('AppCtrl', function ($scope) {
+        $scope.currentNavItem = "fridge";
+    })
 
-  $scope.chats = Chats.products;
-}]);
+    .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', function ($scope, Datas, Product) {
+        $scope.products = Datas.fridge;
+
+        $scope.addProduct = function() {
+            alert(startScan());
+        }
+    }])
+
+    .controller('MarketCtrl', ['$scope', 'Datas', 'Product', function ($scope, Datas, Product) {
+        $scope.products = Datas.market;
+
+        $scope.addProduct = function() {
+        }
+    }])
+
+    .controller('MenusCtrl', ['$scope', 'Datas', 'Product', 'Dish', function ($scope, Datas, Product, Dish) {
+        $scope.menus = Datas.menus;
+    }]);
+
+
+ function startScan() {
+    //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
+    cordova.plugins.barcodeScanner.scan(function (result) {
+            return result.text;
+        }, function (error) {
+            alert("Scanning failed: " + error);
+            return undefined;
+        }
+    );
+}

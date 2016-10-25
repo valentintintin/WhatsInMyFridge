@@ -1,0 +1,17 @@
+<md-list>
+    <md-list-item ng-repeat="p in products" class="md-2-line">
+        <img alt="{{ p.name }}" ng-src="{{ p.image }}" class="md-avatar">
+        <div class="md-list-item-text">
+            <h3>{{ p.name }}</h3>
+            <p>{{ p.qty }}</p>
+        </div>
+
+        <md-button ng-click="" aria-label="Remove one" class="md-secondary md-icon-button remove">
+            <md-icon>remove_circle</md-icon>
+        </md-button>
+        <md-button ng-click="" aria-label="Add one" class="md-secondary md-icon-button add">
+            <md-icon>add_circle</md-icon>
+        </md-button>
+        <md-divider></md-divider>
+    </md-list-item>
+</md-list>

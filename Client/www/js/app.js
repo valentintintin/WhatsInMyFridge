@@ -5,51 +5,57 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngMaterial'])
+angular.module('App', ['ionic', 'App.controllers', 'App.services', 'App.models', 'ngMaterial'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+    .run(function ($ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(true);
 
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-})
+            }
+            if (window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+        });
+    })
 
-.config(function($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
-  $stateProvider
+        // Ionic uses AngularUI Router which uses the concept of states
+        // Learn more here: https://github.com/angular-ui/ui-router
+        // Set up the various states which the app can be in.
+        // Each state's controller can be found in controllers.js
+        $stateProvider
 
-  .state('fridge', {
-    url: '/fridge',
-    templateUrl: 'templates/fridge.html',
-    controller: 'DashCtrl'
-  })
+            .state('fridge', {
+                url: '/fridge',
+                templateUrl: 'views/fridge.html',
+                controller: 'FridgeCtrl'
+            })
 
-  .state('market', {
-    url: '/market',
-    templateUrl: 'templates/market.html',
-    controller: 'DashCtrl'
-  })
+            .state('market', {
+                url: '/market',
+                templateUrl: 'views/market.html',
+                controller: 'FridgeCtrl'
+            })
 
-  .state('menus', {
-    url: '/menus',
-    templateUrl: 'templates/menus.html',
-    controller: 'DashCtrl'
-  });
+            .state('menus', {
+                url: '/menus',
+                templateUrl: 'views/menus.html',
+                controller: 'FridgeCtrl'
+            });
 
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/fridge');
+        // if none of the above states are matched, use this as the fallback
+        $urlRouterProvider.otherwise('/fridge');
 
-});
+        $mdThemingProvider.theme('default')
+            .primaryPalette('light-blue')
+            .accentPalette('deep-orange');
+    });
+
+
+URL_SERVER = "http://77.204.229.132/api/";
