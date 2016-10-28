@@ -24,7 +24,6 @@ angular.module('App', ['ionic', 'App.controllers', 'App.services', 'App.models',
     })
 
     .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
-
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
         // Set up the various states which the app can be in.
