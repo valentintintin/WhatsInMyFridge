@@ -1,41 +1,39 @@
-<md-dialog aria-label="{{ p.name }}">
-    <form ng-cloak>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>Show product</h2>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="close()">
-                    <md-icon aria-label="Close dialog">close</md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
+<md-dialog aria-label="Product display">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Product display</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon aria-label="Close dialog">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
 
-        <md-dialog-content>
-            <md-card>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">{{ product.name }}</span>
-                        <span class="md-subhead">Quantity : {{ product.qty }}</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content layout="row" layout-align="space-between">
-                    <div class="md-media-xl card-media">
-                        <img src="{{ product.image}}" alt="{{ product.name}}" title="{{ product.name}}" />
-                    </div>
+    <md-dialog-content>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{ product.name }}</span>
+                    <span class="md-subhead">Quantity : {{ product.qty }}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="row" layout-align="space-between">
+                <div class="md-media-xl card-media">
+                    <img src="{{ product.image}}" alt="{{ product.name}}" title="{{ product.name}}" />
+                </div>
 
-                    <md-card-actions layout="column">
-                        <md-button class="md-fab md-mini md-secondary remove" ng-click="setQty(true)" aria-label="Remove one">
-                            <md-icon>remove_cricle</md-icon>
-                        </md-button>
-                        <md-button class="md-fab md-mini md-secondary add" ng-click="setQty(false)" aria-label="Add one">
-                            <md-icon>add_cricle</md-icon>
-                        </md-button>
-                        <md-button class="md-fab md-mini md-secondary delete" ng-click="delete()" aria-label="Delete all">
-                            <md-icon>delete_cricle</md-icon>
-                        </md-button>
-                    </md-card-actions>
-                </md-card-content>
-            </md-card>
-        </md-dialog-content>
-    </form>
+                <md-card-actions layout="column">
+                    <md-button class="md-fab md-mini md-secondary add" ng-click="setQty(false)" aria-label="Add one">
+                        <md-icon>add</md-icon>
+                    </md-button>
+                    <md-button class="md-fab md-mini md-secondary remove" ng-click="setQty(true)" aria-label="Remove one">
+                        <md-icon>remove</md-icon>
+                    </md-button>
+                    <md-button class="md-fab md-mini md-secondary delete" ng-click="delete()" aria-label="Delete all">
+                        <md-icon>delete</md-icon>
+                    </md-button>
+                </md-card-actions>
+            </md-card-content>
+        </md-card>
+    </md-dialog-content>
 </md-dialog>

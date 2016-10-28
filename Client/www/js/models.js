@@ -16,7 +16,7 @@ angular.module('App.models', [])
         };
     })
 
-    .factory('Product', function ($http, Toast) {
+    .factory('Product', function ($http, Toast, DialogShowProduct) {
         function Product(code, qty, market, name, image) {
             this.code = code;
             if (qty != undefined) this.qty = qty;
@@ -40,7 +40,7 @@ angular.module('App.models', [])
                             self.getFromOpenFood(true);
                         }
                     }, function () {
-                    Toast.inform("bug retrieve product from server for add");
+                    Toast.show("bug retrieve product from server for add");
                 });
             } else {
                 this.name = name;
@@ -58,6 +58,9 @@ angular.module('App.models', [])
                 this.inBase = false;
                 this.saveChanges();
             },
+
+            isMarket: function() { return this.market; },
+
             getUrlServer: function () {
                 return URL_SERVER + (this.market ? 'market' : 'fridge') + "/"
             },
@@ -100,29 +103,30 @@ angular.module('App.models', [])
                     var self = this;
                     $http.post(URL_SERVER + "product", JSON.stringify(this))
                         .then(function (response) {
-                            if (!response.data) Toast.inform("bug addProduct data");
+                            if (!response.data) Toast.show("bug addProduct data");
                             else {
                                 $http.post(self.getUrlServer(), JSON.stringify(self))
                                     .then(function (response) {
-                                        if (!response.data) Toast.inform("bug addProduct");
+                                        if (!response.data) Toast.show("bug addProduct");
                                         else {
                                             self.inBase = true;
-                                            Toast.inform("Added !", 300);
+                                            DialogShowProduct.show(self, undefined);
+                                            Toast.show("Added !");
                                         }
                                     }, function () {
-                                        Toast.inform("bug addProduct");
+                                        Toast.show("bug addProduct");
                                 });
                             }
                         }, function () {
-                            Toast.inform("bug addProduct data");
+                            Toast.show("bug addProduct data");
                     });
                 } else {
                     $http.put(this.getUrlServer() + this.code, JSON.stringify(this))
                         .then(function (response) {
-                            if (!response.data) Toast.inform("bug updateProduct");
-                            else Toast.inform("Saved !", 300);
+                            if (!response.data) Toast.show("bug updateProduct");
+                            else Toast.show("Saved !", 300);
                         }, function () {
-                            Toast.inform("bug updateProduct");
+                            Toast.show("bug updateProduct");
                     });
                 }
             },
@@ -130,9 +134,10 @@ angular.module('App.models', [])
             deleteFromDb: function () {
                 $http.delete(this.getUrlServer() + this.code)
                     .then(function () {
-                        if (!response.data) Toast.inform("bug deleteProduct");
+                        if (!response.data) Toast.show("bug deleteProduct");
+                        else Toast.show("Deleted !", 300);
                     }, function () {
-                    Toast.inform("bug deleteProduct");
+                    Toast.show("bug deleteProduct");
                 });
             },
 

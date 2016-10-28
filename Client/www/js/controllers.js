@@ -1,14 +1,15 @@
 angular.module('App.controllers', [])
 
-    .controller('AppCtrl', function ($scope) {
-        $scope.currentNavItem = "fridge";
-
-        console.log(ionic.Platform.platform());
+    .controller('AppCtrl', function ($scope, $rootScope, $state) {
+        $rootScope.$on('$stateChangeSuccess',
+            function(event, toState) {
+                $scope.currentNavItem = toState.name;
+            }
+        )
     })
 
-    .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', 'Toast', '$mdDialog', function ($scope, Datas, Product, Toast, $mdDialog) {
+    .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', 'Toast', 'DialogShowProduct', function ($scope, Datas, Product, Toast, DialogShowProduct) {
         $scope.products = Datas.getFridge();
-        $scope.productSelected = undefined;
 
         $scope.addProduct = function() {
             //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
@@ -22,16 +23,7 @@ angular.module('App.controllers', [])
         }
 
         $scope.showProduct = function(product, $event) {
-            $scope.productSelected = product;
-            $mdDialog.show({
-                templateUrl: 'views/showProduct.html',
-                targetEvent: $event,
-                clickOutsideToClose:true,
-                controller: 'ShowProductCtrl',
-                locals: {
-                    product: $scope.productSelected
-                }
-            });
+            DialogShowProduct.show(product, $event);
         }
 
         $scope.setQty = function(product, minus) {
@@ -83,15 +75,14 @@ angular.module('App.controllers', [])
         $scope.menus = Datas.getMenus();
     }])
 
-    .controller('ShowProductCtrl', ['$scope', 'Datas', '$mdDialog', function ($scope, Datas, $mdDialog, product) {
-        console.log(product);
+    .controller('ShowProductCtrl', ['$scope', 'Datas', '$mdDialog', 'product', function ($scope, Datas, $mdDialog, product) {
         $scope.product = product;
 
         $scope.setQty = function(minus) {
             if (minus) {
                 if ($scope.product.minus()) {
                     $scope.product.deleteFromDb();
-                    if ($scope.product.getMarket()) Datas.removeProductFromMarket($scope.product);
+                    if ($scope.product.isMarket()) Datas.removeProductFromMarket($scope.product);
                     else Datas.removeProductFromFridge($scope.product);
                 } else {
                     $scope.product.saveChanges();
@@ -101,8 +92,10 @@ angular.module('App.controllers', [])
 
         $scope.delete = function() {
             $scope.product.deleteFromDb();
-            if ($scope.product.getMarket()) Datas.removeProductFromMarket($scope.product);
+            if ($scope.product.isMarket()) Datas.removeProductFromMarket($scope.product);
             else Datas.removeProductFromFridge($scope.product);
+
+            $mdDialog.hide();
         }
 
         $scope.close = function() {

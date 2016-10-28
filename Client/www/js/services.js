@@ -40,13 +40,27 @@ angular.module('App.services', [])
     }])
 
     .service('Toast', ['$mdToast', function($mdToast) {
-        this.inform = function(message, time) {
+        this.show = function(message, time) {
             if (time == undefined) time = 1500;
             $mdToast.show(
                 $mdToast.simple()
                     .textContent(message)
                     .hideDelay(time)
             );
+        };
+    }])
+
+    .service('DialogShowProduct', ['$mdDialog', function($mdDialog) {
+        this.show = function(product, $event) {
+            $mdDialog.show({
+                templateUrl: 'views/showProduct.html',
+                targetEvent: $event,
+                clickOutsideToClose:true,
+                controller: 'ShowProductCtrl',
+                locals: {
+                    product: product
+                }
+            });
         };
     }])
 ;

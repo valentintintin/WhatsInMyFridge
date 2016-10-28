@@ -21,6 +21,14 @@ md-list md-list-item .md-list-item-text > h3 {
     position: fixed;
 }
 
+md-dialog md-dialog-content >:first-child {
+    margin: auto;
+}
+
+md-dialog md-dialog-content md-card md-card-content {
+    padding-bottom: 0;
+}
+
 md-list {
     padding: 0;
 }
