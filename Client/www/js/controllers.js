@@ -45,6 +45,7 @@ angular.module('App.controllers', [])
 
     .controller('MarketCtrl', ['$scope', 'Datas', 'Product', function ($scope, Datas, Product) {
         $scope.products = Datas.getMarket();
+        $scope.nbProducts = Object.keys($scope.products).length;
 
         $scope.addProduct = function() {
             //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
