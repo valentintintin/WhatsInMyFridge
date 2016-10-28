@@ -16,10 +16,11 @@ angular.module('App.models', [])
         };
     })
 
-    .factory('Product', function ($http) {
-        function Product(code, qty = 1, market, name, image) {
+    .factory('Product', function ($http, Toast) {
+        function Product(code, qty, market, name, image) {
             this.code = code;
-            this.qty = qty;
+            if (qty != undefined) this.qty = qty;
+            else this.qty = 1;
             this.inBase = false;
             this.name = undefined;
             this.image = undefined;
@@ -38,9 +39,9 @@ angular.module('App.models', [])
                         } else {
                             self.getFromOpenFood(true);
                         }
-                    }), function () {
-                    alert("bug retrieve product from server for add");
-                }
+                    }, function () {
+                    Toast.inform("bug retrieve product from server for add");
+                });
             } else {
                 this.name = name;
                 this.image = image;
@@ -53,7 +54,9 @@ angular.module('App.models', [])
 
         Product.prototype = {
             setMarket: function (market) {
-                this.market = market
+                this.market = market;
+                this.inBase = false;
+                this.saveChanges();
             },
             getUrlServer: function () {
                 return URL_SERVER + (this.market ? 'market' : 'fridge') + "/"
@@ -69,19 +72,20 @@ angular.module('App.models', [])
                             else self.name = product.product_name;
                             self.image = product.image_small_url;
 
+                            //TODO debug
                             console.log(JSON.stringify(self));
                         } else if (promptEnable) {
                             self.askName();
                         }
 
                         self.saveChanges();
-                    }), function () {
-                    if (promptEnable) {
-                        self.askName();
-                    }
+                    }, function () {
+                        if (promptEnable) {
+                            self.askName();
+                        }
 
-                    self.saveChanges();
-                };
+                        self.saveChanges();
+                });
             },
 
             askName: function () {
@@ -91,33 +95,49 @@ angular.module('App.models', [])
 
             saveChanges: function () {
                 if (!this.inBase) {
+                    //TODO debug
                     console.log(JSON.stringify(this));
-                    $http.post(this.getUrlServer(), JSON.stringify(this))
-                        .then(function () {
-                            p.inBase = true;
-                        }), function () {
-                        alert("bug addProduct");
-                    };
+                    var self = this;
+                    $http.post(URL_SERVER + "product", JSON.stringify(this))
+                        .then(function (response) {
+                            if (!response.data) Toast.inform("bug addProduct data");
+                            else {
+                                $http.post(self.getUrlServer(), JSON.stringify(self))
+                                    .then(function (response) {
+                                        if (!response.data) Toast.inform("bug addProduct");
+                                        else {
+                                            self.inBase = true;
+                                            Toast.inform("Added !", 300);
+                                        }
+                                    }, function () {
+                                        Toast.inform("bug addProduct");
+                                });
+                            }
+                        }, function () {
+                            Toast.inform("bug addProduct data");
+                    });
                 } else {
                     $http.put(this.getUrlServer() + this.code, JSON.stringify(this))
-                        .then(function () {
-                        }), function () {
-                        alert("bug updateProduct");
-                    };
+                        .then(function (response) {
+                            if (!response.data) Toast.inform("bug updateProduct");
+                            else Toast.inform("Saved !", 300);
+                        }, function () {
+                            Toast.inform("bug updateProduct");
+                    });
                 }
             },
 
             deleteFromDb: function () {
                 $http.delete(this.getUrlServer() + this.code)
                     .then(function () {
-                    }), function () {
-                    alert("bug deleteProduct");
-                };
+                        if (!response.data) Toast.inform("bug deleteProduct");
+                    }, function () {
+                    Toast.inform("bug deleteProduct");
+                });
             },
 
             minus: function () {
                 this.qty--;
-                this.saveChanges();
                 return this.qty <= 0;
             },
 
@@ -137,7 +157,9 @@ angular.module('App.models', [])
         }
 
         Menu.prototype = {
-            add: function (product, qty = 1) {
+            add: function (product, qty) {
+                if (this.qty == undefined) qty = 1;
+
                 if (this.dish[product.code] != undefined) this.dish[product.code].plus();
                 else this.dish[product.code] = new Dish(this, product, qty);
             },
@@ -156,11 +178,12 @@ angular.module('App.models', [])
     }])
 
     .factory('Dish', ['Product', function (Product) {
-        function Dish(menu, product, qty = 1) {
+        function Dish(menu, product, qty) {
             this.menu = menu;
             this.product = product;
-            this.product.qty -= qty;
-            this.qty = qty;
+            if (this.qty != undefined) this.qty = qty;
+            else this.qty = 1;
+            this.product.qty -= this.qty;
         }
 
         Dish.prototype = {

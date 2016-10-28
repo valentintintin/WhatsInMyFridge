@@ -33,20 +33,17 @@ angular.module('App', ['ionic', 'App.controllers', 'App.services', 'App.models',
 
             .state('fridge', {
                 url: '/fridge',
-                templateUrl: 'views/fridge.html',
-                controller: 'FridgeCtrl'
+                templateUrl: 'views/fridge.html'
             })
 
             .state('market', {
                 url: '/market',
-                templateUrl: 'views/market.html',
-                controller: 'FridgeCtrl'
+                templateUrl: 'views/market.html'
             })
 
             .state('menus', {
                 url: '/menus',
-                templateUrl: 'views/menus.html',
-                controller: 'FridgeCtrl'
+                templateUrl: 'views/menus.html'
             });
 
         // if none of the above states are matched, use this as the fallback

@@ -1,17 +1,16 @@
-button.remove {
-    background-color: red !important;
+button.md-fab.md-mini > md-icon{
+    color: white !important;
 }
 
-button.remove > md-icon {
-    color: white !important;
+button.remove {
+    background-color: red !important;
 }
 
 button.add {
     background-color: green !important;
 }
-
-button.add > md-icon, button.add > md-icon:hover {
-    color: white !important;
+button.delete {
+    background-color: slategray !important;
 }
 
 md-list md-list-item .md-list-item-text > h3 {

@@ -1,5 +1,5 @@
 <md-list>
-    <md-list-item ng-repeat="p in products" class="md-2-line">
+    <md-list-item ng-click="showProduct(p, $event)" ng-repeat="p in products" class="md-2-line">
         <img alt="{{ p.name }}" ng-src="{{ p.image }}" class="md-avatar">
         <div class="md-list-item-text">
             <h3>{{ p.name }}</h3>
@@ -7,10 +7,10 @@
         </div>
 
         <md-button class="md-fab md-mini md-secondary remove" ng-click="setQty(p, true)" aria-label="Remove one">
-            <md-icon>remove_cricle</md-icon>
+            <md-icon>remove</md-icon>
         </md-button>
         <md-button class="md-fab md-mini md-secondary add" ng-click="setQty(p, false)" aria-label="Add one">
-            <md-icon>add_cricle</md-icon>
+            <md-icon>add</md-icon>
         </md-button>
         <md-divider></md-divider>
     </md-list-item>
