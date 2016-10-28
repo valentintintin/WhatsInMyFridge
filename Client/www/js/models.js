@@ -22,8 +22,8 @@ angular.module('App.models', [])
             if (qty != undefined) this.qty = qty;
             else this.qty = 1;
             this.inBase = false;
-            this.name = undefined;
-            this.image = undefined;
+            this.name = "";
+            this.image = "";
             this.market = market;
 
             if (name == undefined && image == undefined) {
@@ -74,33 +74,23 @@ angular.module('App.models', [])
                             product = response.data.product;
                             if (product.product_name_fr != undefined) self.name = product.product_name_fr;
                             else self.name = product.product_name;
-                            self.image = product.image_small_url;
 
-                            //TODO debug
-                            console.log(JSON.stringify(self));
+                            if (product.image_small_url != undefined) self.image = product.image_small_url;
+                            else self.image = "";
+
+                            self.saveChanges();
                         } else if (promptEnable) {
-                            self.askName();
+                            DialogProduct.askName(self);
                         }
 
-                        self.saveChanges();
                     }, function () {
-                        if (promptEnable) {
-                            self.askName();
-                        }
-
-                        self.saveChanges();
+                        if (promptEnable) DialogProduct.askName(self);
+                        else self.saveChanges();
                 });
-            },
-
-            askName: function () {
-                DialogProduct.askName(this);
-                if (this.name == "") this.name = this.code;
             },
 
             saveChanges: function () {
                 if (!this.inBase) {
-                    //TODO debug
-                    console.log(JSON.stringify(this));
                     var self = this;
                     $http.post(URL_SERVER + "product", JSON.stringify(this))
                         .then(function (response) {
@@ -111,7 +101,7 @@ angular.module('App.models', [])
                                         if (!response.data) Toast.show("bug addProduct");
                                         else {
                                             self.inBase = true;
-                                            DialogProduct.show(self, undefined);
+                                            DialogProduct.show(self);
                                             Toast.show("Added !");
                                         }
                                     }, function () {

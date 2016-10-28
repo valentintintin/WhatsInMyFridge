@@ -73,7 +73,9 @@ angular.module('App.services', [])
                 .ok('Done !');
 
             $mdDialog.show(confirm).then(function(result) {
-                product.setName(result);
+                if (result.length == 0) result = product.code;
+                product.name = result;
+                product.saveChanges();
             });
         };
 
@@ -92,4 +94,4 @@ angular.module('App.services', [])
     }])
 ;
 
-//http://www.jsoneditoronline.org/?url=http://world.openfoodfacts.org/api/v0/product/3041831120038.json
+//http://www.jsoneditoronline.org/?url=http://world.openfoodfacts.org/api/v0/product/3222472863618.json

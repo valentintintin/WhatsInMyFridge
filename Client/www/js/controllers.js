@@ -19,16 +19,21 @@ angular.module('App.controllers', [])
 		});
 		
         $scope.addProduct = function() {
-            //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
-            cordova.plugins.barcodeScanner.scan(function (result) {
-					if (result.text.length > 0) {
-						if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
-						else Datas.addProductToFridge(new Product(result.text));
-					}
-                }, function (error) {
-                    alert("Scanning failed: " + error);
-                }
-            );
+            if (isMobile) {
+                cordova.plugins.barcodeScanner.scan(function (result) {
+                        if (result.text.length > 0) {
+                            if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
+                            else Datas.addProductToFridge(new Product(result.text));
+                        }
+                    }, function (error) {
+                        alert("Scanning failed: " + error);
+                    }
+                );
+            } else {
+                var result = prompt("Code EAN");
+                if ($scope.products[result] != undefined) $scope.products[result].plus();
+                else Datas.addProductToFridge(new Product(result));
+            }
         }
 
         $scope.showProduct = function(product, $event) {
@@ -62,14 +67,19 @@ angular.module('App.controllers', [])
 		});
 
         $scope.addProduct = function() {
-            //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
-            cordova.plugins.barcodeScanner.scan(function (result) {
-                    if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
-                    else Datas.addProductToMarket(new Product(result.text, 1, true));
-                }, function (error) {
-                    alert("Scanning failed: " + error);
-                }
-            );
+            if (isMobile) {
+                cordova.plugins.barcodeScanner.scan(function (result) {
+                        if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
+                        else Datas.addProductToMarket(new Product(result.text, 1, true));
+                    }, function (error) {
+                        alert("Scanning failed: " + error);
+                    }
+                );
+            } else {
+                var result = prompt("Code EAN");
+                if ($scope.products[result] != undefined) $scope.products[result].plus();
+                else Datas.addProductToMarket(new Product(result));
+            }
         }
 
         $scope.showProduct = function(product, $event) {
