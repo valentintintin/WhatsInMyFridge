@@ -7,3 +7,4 @@ Client/node_modules/
 Client/www/lib/
 Client/platforms/
 Client/plugins/
+Server/db.db

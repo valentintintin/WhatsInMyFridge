@@ -50,7 +50,7 @@ angular.module('App.services', [])
         };
     }])
 
-    .service('DialogShowProduct', ['$mdDialog', function($mdDialog) {
+    .service('DialogProduct', ['$mdDialog', function($mdDialog) {
         this.show = function(product, $event) {
             $mdDialog.show({
                 templateUrl: 'views/showProduct.html',
@@ -62,6 +62,32 @@ angular.module('App.services', [])
                 }
             });
         };
+
+        this.askName = function(product) {
+            var confirm = $mdDialog.prompt()
+                .title('Name the product')
+                .textContent('OpenFoodFacts service doesn\'t know the product.')
+                .placeholder('Product name')
+                .ariaLabel('Product name')
+                .ok('Done !');
+
+            $mdDialog.show(confirm).then(function(result) {
+                product.setName(result);
+            });
+        };
+
+        this.askBuy = function(product, callback) {
+            var confirm = $mdDialog.confirm()
+                .title('Would you like to buy it next time ?')
+                .textContent('Place the product in your shopping list.')
+                .ok('Yes')
+                .cancel('No');
+
+            $mdDialog.show(confirm).then(function() {
+                product.setMarket(true);
+                callback();
+            });
+        }
     }])
 ;
 

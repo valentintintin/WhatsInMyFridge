@@ -8,8 +8,9 @@ angular.module('App.controllers', [])
         )
     })
 
-    .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', 'Toast', 'DialogShowProduct', function ($scope, Datas, Product, Toast, DialogShowProduct) {
+    .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', 'Toast', 'DialogProduct', function ($scope, Datas, Product, Toast, DialogProduct) {
         $scope.products = Datas.getFridge();
+        $scope.nbProducts = Object.keys($scope.products).length;
 
         $scope.addProduct = function() {
             //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
@@ -23,7 +24,7 @@ angular.module('App.controllers', [])
         }
 
         $scope.showProduct = function(product, $event) {
-            DialogShowProduct.show(product, $event);
+            DialogProduct.show(product, $event);
         }
 
         $scope.setQty = function(product, minus) {
@@ -31,12 +32,9 @@ angular.module('App.controllers', [])
                 if (product.minus()) {
                     product.deleteFromDb();
 
-                    if (confirm("Buy again ?")) {
-                        product.qty = 1;
-                        product.setMarket(true);
+                    DialogProduct.askBuy(product, function () {
                         Datas.addProductToMarket(product);
-                    }
-
+                    });
                     Datas.removeProductFromFridge(product);
                 } else {
                     product.saveChanges();
@@ -57,6 +55,10 @@ angular.module('App.controllers', [])
                     alert("Scanning failed: " + error);
                 }
             );
+        }
+
+        $scope.showProduct = function(product, $event) {
+            DialogProduct.show(product, $event);
         }
 
         $scope.setQty = function(product, minus) {
@@ -83,7 +85,12 @@ angular.module('App.controllers', [])
                 if ($scope.product.minus()) {
                     $scope.product.deleteFromDb();
                     if ($scope.product.isMarket()) Datas.removeProductFromMarket($scope.product);
-                    else Datas.removeProductFromFridge($scope.product);
+                    else {
+                        DialogProduct.askBuy(product, function () {
+                            Datas.addProductToMarket(product);
+                        });
+                        Datas.removeProductFromFridge($scope.product);
+                    }
                 } else {
                     $scope.product.saveChanges();
                 }

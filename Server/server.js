@@ -1,13 +1,21 @@
-var dblite = require('dblite'), db = dblite('db.db', '-header');
-
 var express = require('express');
 var bodyParser = require('body-parser')
 var app = express();
+
+var dblite = require('dblite');
+exports.db = dblite('db.db', '-header');
+
+var product = require('./routes/products.js');
+var fridge = require('./routes/fridge.js');
+var market = require('./routes/market.js');
+
+console.log("Wait...");
+
+// Decode JSON
 app.use(bodyParser.json())
 
 // Add headers
 app.use(function (req, res, next) {
-
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -25,110 +33,27 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.get('/api/product', product.findAll);
+app.get('/api/product/:code', product.findByCode);
+app.post('/api/product', product.insert);
+app.put('/api/product/:code', product.update);
+app.delete('/api/product/:code', product.delete);
 
+app.get('/api/fridge', fridge.findAll);
+app.get('/api/fridge/:code', fridge.findByCode);
+app.post('/api/fridge', fridge.insert);
+app.put('/api/fridge/:code', fridge.update);
+app.delete('/api/fridge/:code', fridge.delete);
 
-app.get('/api/product', function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-	db.query("SELECT p.* FROM Products p", function(err, rows) {
-		res.json(rows);
-	});
-});
+app.get('/api/market', market.findAll);
+app.get('/api/market/:code', market.findByCode);
+app.post('/api/market', market.insert);
+app.put('/api/market/:code', market.update);
+app.delete('/api/market/:code', market.delete);
 
-app.get('/api/product/:code', function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-	db.query("SELECT p.* FROM Products p WHERE p.code = ?", [req.params.code], function (err, rows) {
-		res.json(rows);
-	});
-});
+var port = 3000;
+if (process.argv[2] != undefined) port = process.argv[2];
 
-app.post('/api/product', function(req, res) {
-    var p = req.body;
-    db.query("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", [p.code, p.name, p.image]);
-});
+app.listen(port);
 
-app.put('/api/product/:code', function(req, res) {
-    var p = req.body;
-    db.query("UPDATE Products SET name = ?, image = ? WHERE code = ?", [p.name, p.image, req.params.code]);
-});
-
-app.delete('/api/product/:code', function(req, res) {
-    var p = req.body;
-    db.query("DELETE FROM Products WHERE code = ?", [req.params.code]);
-});
-
-
-
-
-
-app.get('/api/fridge', function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-    db.query("SELECT p.*, f.qty FROM Products p JOIN Fridge f on p.code = f.code", function (err, rows) {
-		res.json(rows);
-	});
-});
-
-app.get('/api/fridge/:code', function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-	db.query("SELECT p.*, f.qty FROM Products p JOIN Fridge f on p.code = f.code WHERE p.code = ?", [req.params.code], function (err, rows) {
-		res.json(rows);
-	});
-});
-
-app.post('/api/fridge', function(req, res) {
-    var p = req.body;
-	console.log(p);
-	db.query("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", [p.code, p.name, p.image]);
-	db.query("INSERT INTO Fridge VALUES(?, ?)", [p.code, p.qty]);
-});
-
-app.put('/api/fridge/:code', function(req, res) {
-    var p = req.body;
-	db.query("UPDATE Products SET name = ?, image = ? WHERE code = ?", [p.name, p.image, req.params.code]);
-	db.query("UPDATE Fridge SET qty = ? WHERE code = ?", [p.qty, req.params.code]);
-});
-
-app.delete('/api/fridge/:code', function(req, res) {
-    var p = req.body;
-    db.query("DELETE FROM Fridge WHERE code = ?", [req.params.code]);
-});
-
-
-
-
-
-app.get('/api/market', function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-	db.query("SELECT p.*, f.qty FROM Products p JOIN Market f on p.code = f.code", function (err, rows) {
-		res.json(rows);
-	});
-});
-
-app.get('/api/market/:code', function(req, res){
-    res.setHeader('Content-Type', 'application/json');    
-	db.query("SELECT p.*, f.qty FROM Products p JOIN Market f on p.code = f.code WHERE p.code = ?", [req.params.code], function (err, rows) {
-		res.json(rows);
-	});
-});
-
-app.post('/api/market', function(req, res) {
-    var p = req.body;    
-	db.query("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", [p.code, p.name, p.image]);
-	db.query("INSERT INTO Market VALUES(?, ?)", p.code, p.qty);
-});
-
-app.put('/api/market/:code', function(req, res) {
-    var p = req.body;
-	db.query("UPDATE Products SET name = ?, image = ? WHERE code = ?", [p.name, p.image, req.params.code]);
-	db.query("UPDATE Market SET qty = ? WHERE code = ?", [p.qty, req.params.code]);
-});
-
-app.delete('/api/market/:code', function(req, res) {
-    var p = req.body;
-	db.query("DELETE FROM Market WHERE code = ?", [req.params.code]);
-});
-
-
-
-app.listen(3000);
-
-console.log("Started !");
+console.log("Started on " + port + " !");

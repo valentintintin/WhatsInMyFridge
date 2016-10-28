@@ -16,7 +16,7 @@ angular.module('App.models', [])
         };
     })
 
-    .factory('Product', function ($http, Toast, DialogShowProduct) {
+    .factory('Product', function ($http, Toast, DialogProduct) {
         function Product(code, qty, market, name, image) {
             this.code = code;
             if (qty != undefined) this.qty = qty;
@@ -55,6 +55,7 @@ angular.module('App.models', [])
         Product.prototype = {
             setMarket: function (market) {
                 this.market = market;
+                this.qty = 1;
                 this.inBase = false;
                 this.saveChanges();
             },
@@ -92,7 +93,7 @@ angular.module('App.models', [])
             },
 
             askName: function () {
-                this.name = prompt("Product name: ");
+                DialogProduct.askName(this);
                 if (this.name == "") this.name = this.code;
             },
 
@@ -110,7 +111,7 @@ angular.module('App.models', [])
                                         if (!response.data) Toast.show("bug addProduct");
                                         else {
                                             self.inBase = true;
-                                            DialogShowProduct.show(self, undefined);
+                                            DialogProduct.show(self, undefined);
                                             Toast.show("Added !");
                                         }
                                     }, function () {
@@ -133,7 +134,7 @@ angular.module('App.models', [])
 
             deleteFromDb: function () {
                 $http.delete(this.getUrlServer() + this.code)
-                    .then(function () {
+                    .then(function (response) {
                         if (!response.data) Toast.show("bug deleteProduct");
                         else Toast.show("Deleted !", 300);
                     }, function () {
