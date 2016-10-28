@@ -29,8 +29,8 @@ md-dialog md-dialog-content md-card md-card-content {
     padding-bottom: 0;
 }
 
-md-list {
-    padding: 0;
+md-dialog md-dialog-content md-card md-card-actions.layout-column .md-button:not(.md-icon-button) {
+	margin-top: 10px;
 }
 
 md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {

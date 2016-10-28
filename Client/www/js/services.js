@@ -1,41 +1,42 @@
 angular.module('App.services', [])
 
-    .factory('Datas', ['Product', 'Menu', 'Dish', '$http', function(Product, Menu, Dish, $http) {
-
-        var datas = {
-            fridge: {},
-            market: {},
-            menus: {}
-        };
-
-        $http.get(URL_SERVER + "fridge/")
-            .then(function (response) {
-                response.data.forEach(function (obj) {
-                    datas.fridge[obj.code] = new Product(obj.code, obj.qty, false, obj.name, obj.image);
-                });
-            }, function () {
-            alert("bug getFridge");
-        });
-
-        $http.get(URL_SERVER + "market/")
-            .then(function (response) {
-                response.data.forEach(function (obj) {
-                    datas.market[obj.code] = new Product(obj.code, obj.qty, true, obj.name, obj.image);
-                });
-            }, function () {
-            alert("bug getMarket");
-            });
+    .factory('Datas', ['Product', 'Menu', 'Dish', '$http', 'Toast', function(Product, Menu, Dish, $http, Toast) {
+        var fridge = {};
+		var market = {};
+		var menus = {};
 
         return {
-            getFridge: function() { return datas.fridge; },
-            addProductToFridge: function(product) { datas.fridge[product.code] = product; },
-            removeProductFromFridge: function(product) { delete datas.fridge[product.code]; },
+			getFridge: function() {
+				return $http.get(URL_SERVER + "fridge/")
+					.then(function (response) {
+						response.data.forEach(function (obj) {
+							fridge[obj.code] = new Product(obj.code, obj.qty, false, obj.name, obj.image);
+						});
+						
+						return fridge;
+					}, function () {
+					Toast.show("bug getFridge");
+				});
+			},
+            addProductToFridge: function(product) { fridge[product.code] = product; },
+            removeProductFromFridge: function(product) { delete fridge[product.code]; },
 
-            getMarket: function() { return datas.market; },
-            addProductToMarket: function(product) { datas.market[product.code] = product; },
-            removeProductFromMarket: function(product) { delete datas.market[product.code]; },
+            getMarket: function() {
+				return $http.get(URL_SERVER + "market/")
+					.then(function (response) {
+						response.data.forEach(function (obj) {
+							market[obj.code] = new Product(obj.code, obj.qty, true, obj.name, obj.image);
+						});
+						
+						return market;
+					}, function () {
+					Toast.show("bug getMarket");
+				});
+			},			
+            addProductToMarket: function(product) { market[product.code] = product; },
+            removeProductFromMarket: function(product) { delete market[product.code]; },
 
-            getMenus: function() { return datas.menus; },
+            getMenus: function() { return menus; },
         };
     }])
 

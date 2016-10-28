@@ -9,13 +9,18 @@ angular.module('App.controllers', [])
     })
 
     .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', 'Toast', 'DialogProduct', function ($scope, Datas, Product, Toast, DialogProduct) {
-        $scope.products = Datas.getFridge();
-        $scope.nbProducts = Object.keys($scope.products).length;
-
+		$scope.products = Datas.getFridge().then(function(data) {
+			$scope.products = data;
+		});
+		
+		$scope.$watchCollection('products', function() {
+			$scope.nbProducts = Object.keys($scope.products).length;
+		});
+		
         $scope.addProduct = function() {
             //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
             cordova.plugins.barcodeScanner.scan(function (result) {
-                    if (Datas.getFridge()[result.text] != undefined) Datas.getFridge()[result.text].plus();
+                    if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
                     else Datas.addProductToFridge(new Product(result.text));
                 }, function (error) {
                     alert("Scanning failed: " + error);
@@ -44,13 +49,18 @@ angular.module('App.controllers', [])
     }])
 
     .controller('MarketCtrl', ['$scope', 'Datas', 'Product', function ($scope, Datas, Product) {
-        $scope.products = Datas.getMarket();
-        $scope.nbProducts = Object.keys($scope.products).length;
+        $scope.products = Datas.getMarket().then(function(data) {
+			$scope.products = data;
+		});
+		
+		$scope.$watchCollection('products', function() {
+			$scope.nbProducts = Object.keys($scope.products).length;
+		});
 
         $scope.addProduct = function() {
             //TODO check if mobile to enter the function ! Otherwise it throws error about cordova undefined
             cordova.plugins.barcodeScanner.scan(function (result) {
-                    if (Datas.getMarket()[result.text] != undefined) Datas.getMarket()[result.text].plus();
+                    if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
                     else Datas.addProductToMarket(new Product(result.text));
                 }, function (error) {
                     alert("Scanning failed: " + error);
