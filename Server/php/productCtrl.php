@@ -34,7 +34,7 @@ class ProductCtrl extends Controller {
         if (isset($openData->product) && $openData->product->id != "") {
             $openData = $openData->product;
 
-            $data['id'] = $openData->id;
+            $data['id'] = $openData->code;
 
             if (isset($openData->product_name_fr)) $data['name'] = $openData->product_name_fr;
             else $data['name'] = $openData->product_name;

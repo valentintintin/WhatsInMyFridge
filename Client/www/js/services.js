@@ -84,9 +84,10 @@ angular.module('App.services', [])
                 .ok('Done !');
 
             $mdDialog.show(confirm).then(function(result) {
-                if (result.length == 0) result = product.id;
-                product.name = result;
-                product.createInDb();
+                if (result) {
+                    product.name = result;
+                    product.createInDb();
+                }
             });
         };
 

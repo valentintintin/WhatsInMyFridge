@@ -14,7 +14,7 @@ class UtilsCtrl extends ProductCtrl {
 
     public function refreshDataOpen() {
         echo "\tGet all product with no openData\n\n";
-        $req = 'SELECT * FROM product WHERE image IS NULL';
+        $req = 'SELECT * FROM product WHERE image IS NULL OR image = ""';
         $stmt = $this->db->prepare($req);
         if ($stmt->execute()) {
             $count = $stmt->rowCount();

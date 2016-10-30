@@ -31,8 +31,10 @@ angular.module('App.controllers', [])
                 );
             } else {
                 var result = prompt("Code EAN");
-                if ($scope.products[result] != undefined) $scope.products[result].plus();
-                else Datas.addProductToFridge(new Product(result));
+                if (result) {
+                    if ($scope.products[result] != undefined) $scope.products[result].plus();
+                    else Datas.addProductToFridge(new Product(result));
+                }
             }
         }
 
@@ -73,8 +75,10 @@ angular.module('App.controllers', [])
                 );
             } else {
                 var result = prompt("Code EAN");
-                if ($scope.products[result] != undefined) $scope.products[result].plus();
-                else Datas.addProductToShopping(new Product(result, true));
+                if (result) {
+                    if ($scope.products[result] != undefined) $scope.products[result].plus();
+                    else Datas.addProductToShopping(new Product(result, true));
+                }
             }
         }
 
