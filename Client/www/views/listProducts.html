@@ -1,11 +1,12 @@
 <md-list>
 	<md-subheader ng-show="nbProducts !== 0" class="md-primary">{{ nbProducts }} products</md-subheader>
 	<md-subheader ng-show="nbProducts === 0" class="md-primary">No product</md-subheader>
-    <md-list-item ng-click="showProduct(p, $event)" ng-repeat="p in products" class="md-2-line">
-        <img alt="{{ p.name }}" ng-src="{{ p.image }}" class="md-avatar">
+    <md-list-item ng-click="showProduct(p, $event)" ng-repeat="product in products" class="md-2-line">
+        <img ng-show="product.image" alt="{{ product.name }}" ng-src="{{ product.image }}" class="md-avatar">
+        <span ng-hide="product.image" class="md-avatar"></span>
         <div class="md-list-item-text">
-            <h3>{{ p.name }}</h3>
-            <p>{{ p.quantity }}</p>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.quantity }}</p>
         </div>
 
         <md-button class="md-fab md-mini md-secondary remove" ng-click="setQty(p, true)" aria-label="Remove one">
