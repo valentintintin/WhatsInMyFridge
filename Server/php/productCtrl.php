@@ -8,17 +8,19 @@ class ProductCtrl extends Controller {
         parent::get();
 
         if ($this->id) {
-            if (!isset($this->data[$this->id]['name'])) {
-                $openData = $this->getOpenFoodData();
+            if (!isset($this->data['name'])) {
+                $openData = ProductCtrl::getOpenFoodData($this->id);
                 if (isset($openData['name'])) {
                     $this->data = $openData;
-                    if (!$this->post()) return false;
+                    $rReq = $this->post();
+                    if (isset($rReq['error'])) return $rReq;
                 }
-            } elseif (!isset($this->data[$this->id]['image'])) {
-                $openData = $this->getOpenFoodData();
-                if ((isset($openData['name']) && $this->data[$this->id]['name'] != $openData['name']) || isset($openData['image'])) {
+            } elseif (!isset($this->data['image'])) {
+                $openData = ProductCtrl::getOpenFoodData($this->id);
+                if ((isset($openData['name']) && $this->data['name'] != $openData['name']) || isset($openData['image'])) {
                     $this->data = $openData;
-                    if (!$this->put()) return false;
+                    $rReq = $this->put();
+                    if (isset($rReq['error'])) return $rReq;
                 }
             }
         }
@@ -26,9 +28,9 @@ class ProductCtrl extends Controller {
         return $this->data;
     }
 
-    public function getOpenFoodData() {
+    public static function getOpenFoodData($id) {
         $data = array();
-        $openData = json_decode(file_get_contents('http://world.openfoodfacts.org/api/v0/product/' . $this->id));
+        $openData = json_decode(file_get_contents('http://world.openfoodfacts.org/api/v0/product/' . $id));
         if (isset($openData->product) && $openData->product->id != "") {
             $openData = $openData->product;
 

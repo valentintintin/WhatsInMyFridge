@@ -53,7 +53,7 @@ abstract class Controller {
         }
         $stmt = $this->db->prepare($req);
         if ($stmt->execute($data)) {
-            if ($this->id) return $stmt->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+            if ($this->id) return $stmt->fetch(PDO::FETCH_ASSOC);
             else return array_map('reset', $stmt->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC));
         } else return array("error" => array('error' => $stmt->errorInfo()[2],
             'SQL' => $req,

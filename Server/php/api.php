@@ -5,6 +5,7 @@ require_once 'header.php';
 require_once 'productCtrl.php';
 require_once 'fridgeCtrl.php';
 require_once 'shoppingCtrl.php';
+require_once 'utilsCtrl.php';
 
 $controller = null;
 switch ($table) {
@@ -18,6 +19,10 @@ switch ($table) {
 
     case 'shopping':
         $controller = new ShoppingCtrl($id, $data);
+        break;
+
+    case 'utils':
+        $controller = new UtilsCtrl($id, $data);
         break;
 
     default:
