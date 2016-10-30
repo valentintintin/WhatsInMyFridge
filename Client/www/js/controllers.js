@@ -94,8 +94,15 @@ angular.module('App.controllers', [])
     }])
 
     .controller('ShowProductCtrl', ['$scope', 'Datas', '$mdDialog', 'product', function ($scope, Datas, $mdDialog, product) {
-        product = product;
-
+        $scope.product = product;
+		
+		changeLabelSwitch();
+		
+		function changeLabelSwitch() {
+			if (product.shopping) $scope.inFridge = 'In shopping list';
+			else $scope.inFridge = 'In fridge';
+		}
+		
         $scope.setQty = function(minus) {
             if (minus) {
                 if (product.minus()) {
@@ -126,12 +133,8 @@ angular.module('App.controllers', [])
 
         $scope.onMarketChange = function() {
             product.deleteFromDb();
-            if (product.shopping) {
-                product.setShopping(true);
-                $scope.inFridge = 'In shopping';
-            } else {
-                product.setShopping(false);
-                $scope.inFridge = 'In fridge';
-            }
+            if (product.shopping) product.setShopping(true);
+            else product.setShopping(false);
+			changeLabelSwitch();
         };
     }]);
