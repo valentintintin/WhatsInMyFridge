@@ -1,10 +1,9 @@
 .idea/
 
-Server/node_modules/
-Server/db.db/
+Server/js/node_modules/
+Server/js/db.db/
 
-Client/node_modules/
+Client/node_modules
 Client/www/lib/
 Client/platforms/
 Client/plugins/
-Server/db.db

@@ -37,10 +37,10 @@ app.get('/api/product', function(req, res){
     });
 });
 
-app.get('/api/product/:code', function(req, res){
+app.get('/api/product/:id', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     db.serialize(function() {
-        db.get("SELECT p.*, f.qty FROM Products WHERE p.code = " + req.params.code, function (err, rows) {
+        db.get("SELECT p.*, f.qty FROM Products WHERE p.id = " + req.params.id, function (err, rows) {
             res.json(rows);
         });
     });
@@ -49,21 +49,21 @@ app.get('/api/product/:code', function(req, res){
 app.post('/api/product', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", p.code, p.name, p.image);
+        db.run("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", p.id, p.name, p.image);
     });
 });
 
-app.put('/api/product/:code', function(req, res) {
+app.put('/api/product/:id', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("UPDATE Products SET name = ?, image = ? WHERE code = ?", p.name, p.image, req.params.code);
+        db.run("UPDATE Products SET name = ?, image = ? WHERE code = ?", p.name, p.image, req.params.id);
     });
 });
 
-app.delete('/api/product/:code', function(req, res) {
+app.delete('/api/product/:id', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("DELETE FROM Products WHERE code = ?", req.params.code);
+        db.run("DELETE FROM Products WHERE code = ?", req.params.id);
     });
 });
 
@@ -74,16 +74,16 @@ app.delete('/api/product/:code', function(req, res) {
 app.get('/api/fridge', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     db.serialize(function() {
-        db.all("SELECT p.*, f.qty FROM Products p JOIN Fridge f on p.code = f.code", function (err, rows) {
+        db.all("SELECT p.*, f.qty FROM Products p JOIN Fridge f on p.id = f.id", function (err, rows) {
             res.json(rows);
         });
     });
 });
 
-app.get('/api/fridge/:code', function(req, res){
+app.get('/api/fridge/:id', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     db.serialize(function() {
-        db.get("SELECT p.*, f.qty FROM Products p JOIN Fridge f on p.code = f.code WHERE p.code = " + req.params.code, function (err, rows) {
+        db.get("SELECT p.*, f.qty FROM Products p JOIN Fridge f on p.id = f.id WHERE p.id = " + req.params.id, function (err, rows) {
             res.json(rows);
         });
     });
@@ -92,23 +92,23 @@ app.get('/api/fridge/:code', function(req, res){
 app.post('/api/fridge', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", p.code, p.name, p.image);
-        db.run("INSERT INTO Fridge VALUES(?, ?)", p.code, p.qty);
+        db.run("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", p.id, p.name, p.image);
+        db.run("INSERT INTO Fridge VALUES(?, ?)", p.id, p.qty);
     });
 });
 
-app.put('/api/fridge/:code', function(req, res) {
+app.put('/api/fridge/:id', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("UPDATE Products SET name = ?, image = ? WHERE code = ?", p.name, p.image, req.params.code);
-        db.run("UPDATE Fridge SET qty = ? WHERE code = ?", p.qty, req.params.code);
+        db.run("UPDATE Products SET name = ?, image = ? WHERE code = ?", p.name, p.image, req.params.id);
+        db.run("UPDATE Fridge SET qty = ? WHERE code = ?", p.qty, req.params.id);
     });
 });
 
-app.delete('/api/fridge/:code', function(req, res) {
+app.delete('/api/fridge/:id', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("DELETE FROM Fridge WHERE code = ?", req.params.code);
+        db.run("DELETE FROM Fridge WHERE code = ?", req.params.id);
     });
 });
 
@@ -116,44 +116,44 @@ app.delete('/api/fridge/:code', function(req, res) {
 
 
 
-app.get('/api/market', function(req, res){
+app.get('/api/shopping', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     db.serialize(function() {
-        db.all("SELECT p.*, f.qty FROM Products p JOIN Market f on p.code = f.code", function (err, rows) {
+        db.all("SELECT p.*, f.qty FROM Products p JOIN Market f on p.id = f.id", function (err, rows) {
             res.json(rows);
         });
     });
 });
 
-app.get('/api/market/:code', function(req, res){
+app.get('/api/shopping/:id', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     db.serialize(function() {
-        db.get("SELECT p.*, f.qty FROM Products p JOIN Market f on p.code = f.code WHERE p.code = " + req.params.code, function (err, rows) {
+        db.get("SELECT p.*, f.qty FROM Products p JOIN Market f on p.id = f.id WHERE p.id = " + req.params.id, function (err, rows) {
             res.json(rows);
         });
     });
 });
 
-app.post('/api/market', function(req, res) {
+app.post('/api/shopping', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", p.code, p.name, p.image);
-        db.run("INSERT INTO Market VALUES(?, ?)", p.code, p.qty);
+        db.run("INSERT OR IGNORE INTO Products VALUES(?, ?, ?)", p.id, p.name, p.image);
+        db.run("INSERT INTO Market VALUES(?, ?)", p.id, p.qty);
     });
 });
 
-app.put('/api/market/:code', function(req, res) {
+app.put('/api/shopping/:id', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("UPDATE Products SET name = ?, image = ? WHERE code = ?", p.name, p.image, req.params.code);
-        db.run("UPDATE Market SET qty = ? WHERE code = ?", p.qty, req.params.code);
+        db.run("UPDATE Products SET name = ?, image = ? WHERE code = ?", p.name, p.image, req.params.id);
+        db.run("UPDATE Market SET qty = ? WHERE code = ?", p.qty, req.params.id);
     });
 });
 
-app.delete('/api/market/:code', function(req, res) {
+app.delete('/api/shopping/:id', function(req, res) {
     var p = req.body;
     db.serialize(function() {
-        db.run("DELETE FROM Market WHERE code = ?", req.params.code);
+        db.run("DELETE FROM Market WHERE code = ?", req.params.id);
     });
 });
 
