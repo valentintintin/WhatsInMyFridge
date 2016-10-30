@@ -1,3 +1,32 @@
-@import '_config.scss';
-@import '_helper.scss';
-@import '_cards.scss';
+button.remove > md-icon, button.remove > md-icon:hover {
+    color: red;
+}
+
+button.add > md-icon, button.add > md-icon:hover {
+    color: green;
+}
+
+list md-list md-list-item .md-list-item-text h3 {
+    word-wrap: normal;
+}
+
+.md-button.md-fab.fixed {
+    position: fixed;
+}
+
+md-list {
+    padding: 0;
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
+    color: white;
+}
+
+md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar {
+    width: 50px;
+    height: 50px;
+}
+
+md-list-item .md-avatar, md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar, md-list-item .md-list-item-inner .md-avatar-icon {
+    border-radius: 10%;
+}

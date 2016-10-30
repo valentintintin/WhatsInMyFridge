@@ -1,0 +1,3 @@
+Options +FollowSymlinks
+RewriteEngine On
+RewriteRule ^([a-z,_]+)(\/([0-9]+))?$ php/api.php?table=$1&id=$3

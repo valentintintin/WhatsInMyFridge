@@ -1,186 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>WhatsInMyFridge?</title>
-    
+    <title></title>
+
+    <link rel="manifest" href="manifest.json">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="css/style.css"  media="screen,projection"/>
+    <link href="lib/angular-material/angular-material.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-material/angular-material.js"></script>
 
     <script src="cordova.js"></script>
-  </head>
-  <body ng-app="App">
-    <header>
-      <section class="navbar-fixed">
-        <nav>
-          <div class="nav-wrapper">
-              <a href="#" data-activates="slide-out" class="button-collapse left"><i class="material-icons">menu</i></a>
-              <a href="#!" class="brand-logo center">What's in my fridge?</a>
-          </div>
-          <ul class="tabs">
-            <li class="tab col s4">
-              <a class="waves-effect waves-light active" href="#fridge"><i class="material-icons">kitchen</i>Fridge</a>
-            </li>
-            <li class="tab col s4">
-              <a class="waves-effect waves-light" href="#market"><i class="material-icons">shopping_cart</i>Market</a></li>
-            <li class="tab col s4 disabled">
-              <a class="waves-effect waves-light" href="#menus"><i class="material-icons">restaurant_menu</i>Menus</a>
-            </li>
-          </ul>
-        </nav>
-      </section>
-    </header>
-
-    <aside>
-      <section>
-        <ul id="slide-out" class="side-nav">
-          <li>
-            <div class="userView">
-              <!--<img class="background" src="images/office.jpg">
-              <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-              <a href="#!name"><span class="white-text name">John Doe</span></a>
-              <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>-->
-            </div>
-          </li>
-          <li>
-            <a class="waves-effect" href=""><i class="material-icons">kitchen</i>Fridge</a>
-          </li>
-        </ul>
-      </section>
-    </aside>
-
-    <main>
-      <section>
-        <article ng-controller="productsCtrl" id="fridge">
-          <listproducts from="fridge" /></listproducts>
-
-          <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a class="btn-floating btn-large waves-effect waves-light add"><i class="large material-icons">add</i></a>
-          </div>
-        </article>
-        <article ng-controller="productsCtrl" id="market">
-          <listproducts from="market" /></listproducts>
-
-          <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a class="btn-floating btn-large waves-effect waves-light add"><i class="large material-icons">add</i></a>
-          </div>
-        </article>
-        <article ng-controller="menusCtrl" id="menus">
-
-        </article>
-      </section>
-        <!--
-        <div class="row col s12">
-          <div class="card">
-            <div class="card-content">
-              <span class="card-title">Add a product</span>
-              <form class="row" ng-submit="add()">
-                <div class="input-field col s8">
-                  <i class="material-icons prefix">search</i>
-                  <input placeholder="3521042206511" id="codeProduct" type="text" class="validate" autofocus ng-touchend="startScan()">
-                  <label for="codeProduct">Code EAN</label>
-                </div>
-                <div class="col s4">
-                  <input class="waves-effect waves-light btn" type="submit" value="Ajouter"/>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>-->
-      </section>
-    </main>
-    
-    <footer>
-      
-    </footer>
-    
-    <div >
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      <!--
-      <div id="listProductsToBuy">
-        <h3>Market <i>Qty: {{productsToBuy.length}}</i></h3>
-        <ul>
-          <li ng-repeat="(name, p) in productsToBuy">
-            <label>
-              <img src="{{p.image}}"/>
-              {{p.name}} <b>Qty: {{p.qty}}</b>
-            </label>
-            <input type="button" value="-" ng-click="setQtyToBuy(p, true)"/>
-            <input type="button" value="+" ng-click="setQtyToBuy(p, false)"/>
-          </li>
-        </ul>
-        <form ng-submit="addToBuy()">
-          <input type="text" ng-model="codeProductToBuy" ng-touchend="startScanBuy()"/>
-          <input type="submit" value="Ajouter"/>
-        </form>
-      </div>
-    </div>
-    <div ng-controller="menusCtrl">
-      <div id="listMenu">
-        <h3>Menus:</h3>
-        <div ng-repeat="m in menus">
-          <fieldset>
-            <legend>{{m.date}}</legend>
-            <ul>
-              <li ng-repeat="(name, d) in m.dish">
-                <label>
-                  <img src="{{d.product.image}}"/>
-                    {{d.product.name}}
-                  <b>Qty: {{d.qty}}</b>
-                </label>
-                <input type="button" value="-" ng-click="d.minus()"/>
-                <input type="button" value="+" ng-click="d.plus()"/>
-                <input type="button" value="X" ng-click="m.remove(d)"/>
-              </li>
-              <li>
-                <select ng-model="productIndexToAdd" required>
-                  <option selected ng-repeat="pp in products" value="{{pp.code}}">{{pp.name}}</option>
-                </select>
-                <input type="submit" value="Ajouter" ng-click="m.add(products[productIndexToAdd])"/>
-              </li>
-            </ul>
-            <input type="button" value="Supprimer" ng-click="removeMenu(m)"/>
-          </fieldset>
-        </div>
-      </div>
-      <div id="newMenu">
-        <fieldset>
-          <legend>New</legend>
-          <form ng-submit="addNewMenu()">
-            <label for="dateMenu">Date:</label>
-            <input type="text" id="dateMenu" ng-model="dateMenu" required/>
-            <input type="submit" value="Ajouter"/>
-          </form>
-        </fieldset>
-      </div>
-    </div>
--->
-    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="lib/materialize/dist/js/materialize.min.js"></script>
-
-    <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/ngtouch/build/ngTouch.min.js"></script>
-
-    <script type="text/javascript" src="js/style.js"></script>
 
     <script src="js/app.js"></script>
     <script src="js/models.js"></script>
-    <script src="js/services/datas.js"></script>
-    <script src="js/controllers/products.js"></script>
-    <script src="js/controllers/menus.js"></script>
-  </body>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+</head>
+<body ng-app="App" ng-cloak layout="row">
+    <md-content layout="column" flex ng-controller="AppCtrl">
+        <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar _md _md-toolbar-transitions">
+            <div class="md-toolbar-tools">
+                <span flex></span>
+                <h1>What's in my fridge?</h1>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-nav-bar md-stretch-tabs="always" md-selected-nav-item="currentNavItem" nav-bar-aria-label="Navigation tabs">
+            <md-nav-item md-nav-sref="fridge" name="fridge">Fridge</md-nav-item>
+            <md-nav-item md-nav-sref="shopping" name="shopping">Shopping</md-nav-item>
+            <md-nav-item md-nav-sref="menus" name="menus">Menus</md-nav-item>
+        </md-nav-bar>
+
+        <md-content>
+            <ui-view></ui-view>
+        </md-content>
+    </md-content>
+</body>
 </html>

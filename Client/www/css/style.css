@@ -1,31 +1,59 @@
-body {
-  background-color: #ECEFF1; }
+button.md-fab.md-mini > md-icon{
+    color: white !important;
+}
 
-.navbar-fixed {
-  height: 97px; }
+button.remove {
+    background-color: red !important;
+}
 
-.tabs a i.material-icons {
-  padding-right: 0.35em;
-  font-size: 1.2em; }
+button.add {
+    background-color: green !important;
+}
+button.delete {
+    background-color: slategray !important;
+}
 
-.add, .add:hover {
-  background-color: green; }
+md-list md-list-item .md-list-item-text > h3 {
+    white-space: normal !important;
+}
 
-.remove, .remove:hover {
-  background-color: red; }
+.md-button.md-fab.fixed {
+    position: fixed;
+}
 
-.collection .collection-item {
-  padding-left: 72px;
-  min-height: 60px; }
-  .collection .collection-item img {
-    position: absolute;
-    width: 42px;
-    height: 42px;
-    left: 15px; }
-  .collection .collection-item .title {
-    font-size: 16px;
-    display: inline-block;
-    max-width: 65%;
-    word-wrap: break-word; }
-  .collection .collection-item .secondary-content .badge {
-    position: relative; }
+md-dialog md-dialog-content >:first-child {
+    margin: auto;
+}
+
+md-dialog md-dialog-content md-card md-card-content {
+    padding-bottom: 0;
+}
+
+md-dialog md-dialog-content md-card md-card-actions.layout-column .md-button:not(.md-icon-button) {
+	margin-top: 10px;
+}
+
+md-dialog md-toolbar .md-toolbar-tools .md-button.md-icon-button md-icon {
+    color: white;
+}
+
+md-dialog md-dialog-content md-card md-card-title-text .md-subhead {
+    display: flex;
+}
+
+md-dialog md-dialog-content md-card md-card-title-text .md-subhead md-switch {
+    margin: 0;
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
+    color: white;
+}
+
+md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar {
+    width: 50px;
+    height: 50px;
+}
+
+md-list-item .md-avatar, md-list-item .md-avatar-icon, md-list-item .md-list-item-inner .md-avatar, md-list-item .md-list-item-inner .md-avatar-icon {
+    border-radius: 10%;
+}
