@@ -43,21 +43,17 @@ angular.module('App.controllers', [])
         $scope.setQty = function(product, minus) {
             if (minus) {
                 if (product.minus()) {
-                    product.deleteFromDb();
-
                     DialogProduct.askBuy(product, function () {
-                        Datas.addProductToMarket(product);
+                        Datas.addProductToShopping(product);
                     });
                     Datas.removeProductFromFridge(product);
-                } else {
-                    product.saveChanges();
                 }
             } else product.plus();
         }
     }])
 
-    .controller('MarketCtrl', ['$scope', 'Datas', 'Product', 'DialogProduct', function ($scope, Datas, Product, DialogProduct) {
-        $scope.products = Datas.getMarket().then(function(data) {
+    .controller('ShoppingCtrl', ['$scope', 'Datas', 'Product', 'DialogProduct', function ($scope, Datas, Product, DialogProduct) {
+        $scope.products = Datas.getShopping().then(function(data) {
 			$scope.products = data;
 		});
 		
@@ -70,7 +66,7 @@ angular.module('App.controllers', [])
             if (isMobile) {
                 cordova.plugins.barcodeScanner.scan(function (result) {
                         if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
-                        else Datas.addProductToMarket(new Product(result.text, 1, true));
+                        else Datas.addProductToShopping(new Product(result.text, 1, true));
                     }, function (error) {
                         alert("Scanning failed: " + error);
                     }
@@ -78,7 +74,7 @@ angular.module('App.controllers', [])
             } else {
                 var result = prompt("Code EAN");
                 if ($scope.products[result] != undefined) $scope.products[result].plus();
-                else Datas.addProductToMarket(new Product(result));
+                else Datas.addProductToShopping(new Product(result));
             }
         }
 
@@ -88,12 +84,7 @@ angular.module('App.controllers', [])
 
         $scope.setQty = function(product, minus) {
             if (minus) {
-                if (product.minus()) {
-                    product.deleteFromDb();
-                    Datas.removeProductFromMarket(product);
-                } else {
-                    product.saveChanges();
-                }
+                if (product.minus()) Datas.removeProductFromShopping(product);
             } else product.plus();
         }
     }])
@@ -103,30 +94,27 @@ angular.module('App.controllers', [])
     }])
 
     .controller('ShowProductCtrl', ['$scope', 'Datas', '$mdDialog', 'product', function ($scope, Datas, $mdDialog, product) {
-        $scope.product = product;
+        product = product;
 
         $scope.setQty = function(minus) {
             if (minus) {
-                if ($scope.product.minus()) {
-                    $scope.product.deleteFromDb();
-                    if ($scope.product.isMarket()) Datas.removeProductFromMarket($scope.product);
+                if (product.minus()) {
+                    if (product.shopping) Datas.removeProductFromShopping(product);
                     else {
                         DialogProduct.askBuy(product, function () {
-                            Datas.addProductToMarket(product);
+                            Datas.addProductToShopping(product);
                         });
-                        Datas.removeProductFromFridge($scope.product);
+                        Datas.removeProductFromFridge(product);
                     }
-                } else {
-                    $scope.product.saveChanges();
                 }
-            } else $scope.product.plus();
+            } else product.plus();
         }
 
         $scope.delete = function() {
 			if (confirm("Remove the product ?")) {
-				$scope.product.deleteFromDb();
-				if ($scope.product.isMarket()) Datas.removeProductFromMarket($scope.product);
-				else Datas.removeProductFromFridge($scope.product);
+				product.deleteFromDb();
+				if (product.shopping) Datas.removeProductFromShopping(product);
+				else Datas.removeProductFromFridge(product);
 
 				$mdDialog.hide();
 			}
@@ -134,5 +122,16 @@ angular.module('App.controllers', [])
 
         $scope.close = function() {
             $mdDialog.hide();
+        };
+
+        $scope.onMarketChange = function() {
+            product.deleteFromDb();
+            if (product.shopping) {
+                product.setShopping(true);
+                $scope.inFridge = 'In shopping';
+            } else {
+                product.setShopping(false);
+                $scope.inFridge = 'In fridge';
+            }
         };
     }]);

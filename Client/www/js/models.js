@@ -17,134 +17,150 @@ angular.module('App.models', [])
     })
 
     .factory('Product', function ($http, Toast, DialogProduct) {
-        function Product(code, qty, market, name, image) {
-            this.code = code;
-            if (qty != undefined) this.qty = qty;
-            else this.qty = 1;
-            this.inBase = false;
+        function Product(id, quantity, shopping, name, image) {
+            this.id = id;
+            if (quantity != undefined) this.quantity = quantity;
+            else this.quantity = 1;
             this.name = "";
             this.image = "";
-            this.market = market;
+            this.shopping = shopping;
+            this.show = true;
 
             if (name == undefined && image == undefined) {
                 var self = this;
 
-                $http.get(URL_SERVER + "product/" + this.code)
+                $http.get(URL_SERVER + "product/" + this.id)
                     .then(function (response) {
-                        var p = response.data;
-                        if (p.name != undefined && p.image != undefined) {
-                            self.name = p.name;
-                            self.image = p.image;
-                            self.saveChanges();
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug retrieve product from server for add");
+                            DialogProduct.askName(self);
                         } else {
-                            self.getFromOpenFood(true);
+                            var p = response.data;
+                            if (p.name != undefined) {
+                                self.name = p.name;
+                                self.image = p.image;
+                                self.insertInDb();
+                            } else {
+                                DialogProduct.askName(self);
+                            }
                         }
                     }, function () {
                     Toast.show("bug retrieve product from server for add");
+                    DialogProduct.askName(self);
                 });
             } else {
                 this.name = name;
                 this.image = image;
-
-                if (!this.inBase && this.image == undefined) this.getFromOpenFood(false);
-
-                this.inBase = true;
             }
         }
 
         Product.prototype = {
-            setMarket: function (market) {
-                this.market = market;
-                this.qty = 1;
-                this.inBase = false;
-                this.saveChanges();
+            setShopping: function(market) {
+                this.show = false;
+                this.shopping = market;
+                this.quantity = 1;
+                this.insertInDb();
             },
 
-            isMarket: function() { return this.market; },
-
-            getUrlServer: function () {
-                return URL_SERVER + (this.market ? 'market' : 'fridge') + "/"
+            getUrlServer: function(id) {
+                return URL_SERVER + (this.shopping ? 'shopping' : 'fridge') + (id ? "/" + this.id : "");
             },
 
-            getFromOpenFood: function (promptEnable) {
+            createInDb: function() {
                 var self = this;
-                $http.get("http://world.openfoodfacts.org/api/v0/product/" + this.code)
+                $http.post(URL_SERVER + "product", this.getJSON(true))
                     .then(function (response) {
-                        if (response.data.product != undefined && response.data.product.code != "") {
-                            product = response.data.product;
-                            if (product.product_name_fr != undefined) self.name = product.product_name_fr;
-                            else self.name = product.product_name;
-
-                            if (product.image_small_url != undefined) self.image = product.image_small_url;
-                            else self.image = "";
-
-                            self.saveChanges();
-                        } else if (promptEnable) {
-                            DialogProduct.askName(self);
-                        }
-
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug addProduct data");
+                        } else self.insertInDb();
                     }, function () {
-                        if (promptEnable) DialogProduct.askName(self);
-                        else self.saveChanges();
+                        Toast.show("bug addProduct data");
+                    });
+            },
+
+            insertInDb: function() {
+                var self = this;
+                $http.post(self.getUrlServer(), self.getJSON())
+                    .then(function (response) {
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug addProduct");
+                        } else {
+                            if (self.show) DialogProduct.show(self);
+                            Toast.show("Added !");
+                            self.show = true;
+                        }
+                    }, function () {
+                        Toast.show("bug addProduct");
+                    });
+            },
+
+            updateInDb: function () {
+                $http.put(this.getUrlServer(true), this.getJSON())
+                    .then(function (response) {
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug updateProduct");
+                        } else Toast.show("Saved !", 300);
+                    }, function () {
+                        Toast.show("bug updateProduct");
                 });
             },
 
-            saveChanges: function () {
-                if (!this.inBase) {
-                    var self = this;
-                    $http.post(URL_SERVER + "product", JSON.stringify(this))
-                        .then(function (response) {
-                            if (!response.data) Toast.show("bug addProduct data");
-                            else {
-                                $http.post(self.getUrlServer(), JSON.stringify(self))
-                                    .then(function (response) {
-                                        if (!response.data) Toast.show("bug addProduct");
-                                        else {
-                                            self.inBase = true;
-                                            DialogProduct.show(self);
-                                            Toast.show("Added !");
-                                        }
-                                    }, function () {
-                                        Toast.show("bug addProduct");
-                                });
-                            }
-                        }, function () {
-                            Toast.show("bug addProduct data");
-                    });
-                } else {
-                    $http.put(this.getUrlServer() + this.code, JSON.stringify(this))
-                        .then(function (response) {
-                            if (!response.data) Toast.show("bug updateProduct");
-                            else Toast.show("Saved !", 300);
-                        }, function () {
-                            Toast.show("bug updateProduct");
-                    });
-                }
-            },
-
             deleteFromDb: function () {
-                $http.delete(this.getUrlServer() + this.code)
+                $http.delete(this.getUrlServer(true))
                     .then(function (response) {
-                        if (!response.data) Toast.show("bug deleteProduct");
-                        else Toast.show("Deleted !", 300);
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug deleteProduct");
+                        } else Toast.show("Deleted !", 300);
                     }, function () {
                     Toast.show("bug deleteProduct");
                 });
             },
 
             minus: function () {
-                this.qty--;
-                return this.qty <= 0;
+                this.quantity--;
+                if (this.quantity <= 0) {
+                    this.deleteFromDb();
+                    return true;
+                } else {
+                    this.updateInDb();
+                    return false;
+                }
             },
 
             plus: function () {
-                this.qty++;
-                this.saveChanges();
+                this.quantity++;
+                this.updateInDb();
+            },
+
+            getJSON: function(product) {
+                if (product) return JSON.stringify({id: this.id, name: this.name, image: (this.image ? this.image : undefined)});
+                else return JSON.stringify({product_id: this.id, user_id: 1, quantity: this.quantity});
             }
         };
 
         return Product;
     })
+
+
+
+
+
+
+
+
+
+
+
 
     .factory('Menu', ['Dish', function (Dish) {
         function Menu(date) {
@@ -153,16 +169,16 @@ angular.module('App.models', [])
         }
 
         Menu.prototype = {
-            add: function (product, qty) {
-                if (this.qty == undefined) qty = 1;
+            add: function (product, quantity) {
+                if (this.quantity == undefined) quantity = 1;
 
-                if (this.dish[product.code] != undefined) this.dish[product.code].plus();
-                else this.dish[product.code] = new Dish(this, product, qty);
+                if (this.dish[product.id] != undefined) this.dish[product.id].plus();
+                else this.dish[product.id] = new Dish(this, product, quantity);
             },
 
             remove: function (dish) {
-                this.dish[dish.product.code].dispose();
-                delete this.dish[dish.product.code];
+                this.dish[dish.product.id].dispose();
+                delete this.dish[dish.product.id];
             },
 
             dispose: function () {
@@ -174,31 +190,31 @@ angular.module('App.models', [])
     }])
 
     .factory('Dish', ['Product', function (Product) {
-        function Dish(menu, product, qty) {
+        function Dish(menu, product, quantity) {
             this.menu = menu;
             this.product = product;
-            if (this.qty != undefined) this.qty = qty;
-            else this.qty = 1;
-            this.product.qty -= this.qty;
+            if (this.quantity != undefined) this.quantity = quantity;
+            else this.quantity = 1;
+            this.product.quantity -= this.quantity;
         }
 
         Dish.prototype = {
             minus: function () {
-                this.qty--;
+                this.quantity--;
                 this.product.plus();
 
-                if (this.qty <= 0) {
+                if (this.quantity <= 0) {
                     this.menu.remove(this);
                 }
             },
 
             plus: function () {
-                this.qty++;
+                this.quantity++;
                 this.product.minus();
             },
 
             dispose: function () {
-                this.product.qty += this.qty;
+                this.product.quantity += this.quantity;
             }
         };
 

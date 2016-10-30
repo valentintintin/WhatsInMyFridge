@@ -35,9 +35,9 @@ angular.module('App', ['ionic', 'App.controllers', 'App.services', 'App.models',
                 templateUrl: 'views/fridge.html'
             })
 
-            .state('market', {
-                url: '/market',
-                templateUrl: 'views/market.html'
+            .state('shopping', {
+                url: '/shopping',
+                templateUrl: 'views/shopping.html'
             })
 
             .state('menus', {
@@ -55,4 +55,4 @@ angular.module('App', ['ionic', 'App.controllers', 'App.services', 'App.models',
 
 isMobile = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
 
-URL_SERVER = "http://77.204.229.132/api/";
+URL_SERVER = "http://77.204.229.132/whatsinmyfridge/";

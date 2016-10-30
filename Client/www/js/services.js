@@ -2,39 +2,50 @@ angular.module('App.services', [])
 
     .factory('Datas', ['Product', 'Menu', 'Dish', '$http', 'Toast', function(Product, Menu, Dish, $http, Toast) {
         var fridge = {};
-		var market = {};
+		var shopping = {};
 		var menus = {};
 
         return {
 			getFridge: function() {
-				return $http.get(URL_SERVER + "fridge/")
+				return $http.get(URL_SERVER + "fridge")
 					.then(function (response) {
-						response.data.forEach(function (obj) {
-							fridge[obj.code] = new Product(obj.code, obj.qty, false, obj.name, obj.image);
-						});
-						
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug getFridge");
+                        } else {
+                            angular.forEach(response.data, function (product, id) {
+                                fridge[id] = new Product(product.id, product.quantity, false, product.name, product.image);
+                            });
+                        }
 						return fridge;
 					}, function () {
 					Toast.show("bug getFridge");
 				});
 			},
-            addProductToFridge: function(product) { fridge[product.code] = product; },
-            removeProductFromFridge: function(product) { delete fridge[product.code]; },
+            addProductToFridge: function(product) { fridge[product.id] = product; },
+            removeProductFromFridge: function(product) { delete fridge[product.id]; },
 
-            getMarket: function() {
-				return $http.get(URL_SERVER + "market/")
+            getShopping: function() {
+				return $http.get(URL_SERVER + "shopping")
 					.then(function (response) {
-						response.data.forEach(function (obj) {
-							market[obj.code] = new Product(obj.code, obj.qty, true, obj.name, obj.image);
-						});
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug getShopping");
+                        } else {
+                            angular.forEach(response.data, function (product, id) {
+                                shopping[id] = new Product(product.id, product.quantity, true, product.name, product.image);
+                            });
+                        }
 						
-						return market;
+						return shopping;
 					}, function () {
-					Toast.show("bug getMarket");
+					Toast.show("bug getShopping");
 				});
 			},			
-            addProductToMarket: function(product) { market[product.code] = product; },
-            removeProductFromMarket: function(product) { delete market[product.code]; },
+            addProductToShopping: function(product) { shopping[product.id] = product; },
+            removeProductFromShopping: function(product) { delete shopping[product.id]; },
 
             getMenus: function() { return menus; },
         };
@@ -73,9 +84,9 @@ angular.module('App.services', [])
                 .ok('Done !');
 
             $mdDialog.show(confirm).then(function(result) {
-                if (result.length == 0) result = product.code;
+                if (result.length == 0) result = product.id;
                 product.name = result;
-                product.saveChanges();
+                product.createInDb();
             });
         };
 
@@ -87,7 +98,7 @@ angular.module('App.services', [])
                 .cancel('No');
 
             $mdDialog.show(confirm).then(function() {
-                product.setMarket(true);
+                product.setShopping(true);
                 callback();
             });
         }

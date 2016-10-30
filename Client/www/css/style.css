@@ -33,6 +33,18 @@ md-dialog md-dialog-content md-card md-card-actions.layout-column .md-button:not
 	margin-top: 10px;
 }
 
+md-dialog md-toolbar .md-toolbar-tools .md-button.md-icon-button md-icon {
+    color: white;
+}
+
+md-dialog md-dialog-content md-card md-card-title-text .md-subhead {
+    display: flex;
+}
+
+md-dialog md-dialog-content md-card md-card-title-text .md-subhead md-switch {
+    margin: 0;
+}
+
 md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
     color: white;
 }

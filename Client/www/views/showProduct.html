@@ -1,4 +1,4 @@
-<md-dialog aria-label="Product display">
+<md-dialog aria-label="Product details">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Product display</h2>
@@ -14,7 +14,13 @@
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{ product.name }}</span>
-                    <span class="md-subhead">Quantity : {{ product.qty }}</span>
+                    <div class="md-subhead">
+                        <span>Quantity : {{ product.quantity }}</span>
+                        <span flex></span>
+                        <md-switch ng-model="product.market" ng-change="onMarketChange()" aria-label="In fridge ?">
+                            {{ inFridge }}
+                        </md-switch>
+                    </div>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="row" layout-align="space-between">
