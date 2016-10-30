@@ -15,7 +15,7 @@ angular.module('App.services', [])
                             Toast.show("bug getFridge");
                         } else {
                             angular.forEach(response.data, function (product, id) {
-                                fridge[id] = new Product(product.id, product.quantity, false, product.name, product.image);
+                                fridge[id] = new Product(product.id, false, product.quantity, product.name, product.image);
                             });
                         }
 						return fridge;
@@ -35,7 +35,7 @@ angular.module('App.services', [])
                             Toast.show("bug getShopping");
                         } else {
                             angular.forEach(response.data, function (product, id) {
-                                shopping[id] = new Product(product.id, product.quantity, true, product.name, product.image);
+                                shopping[id] = new Product(product.id, true, product.quantity, product.name, product.image);
                             });
                         }
 						

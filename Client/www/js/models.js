@@ -17,13 +17,14 @@ angular.module('App.models', [])
     })
 
     .factory('Product', function ($http, Toast, DialogProduct) {
-        function Product(id, quantity, shopping, name, image) {
+        function Product(id, shopping, quantity, name, image) {
             this.id = id;
+            if (shopping != undefined) this.shopping = shopping;
+            else this.shopping = false;
             if (quantity != undefined) this.quantity = quantity;
             else this.quantity = 1;
             this.name = "";
             this.image = "";
-            this.shopping = shopping;
             this.show = true;
 
             if (name == undefined && image == undefined) {
@@ -60,7 +61,7 @@ angular.module('App.models', [])
             setShopping: function(market) {
                 this.show = false;
                 this.shopping = market;
-                this.quantity = 1;
+                if (this.quantity == 0) this.quantity = 1;
                 this.insertInDb();
             },
 

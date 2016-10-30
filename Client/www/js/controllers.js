@@ -66,7 +66,7 @@ angular.module('App.controllers', [])
             if (isMobile) {
                 cordova.plugins.barcodeScanner.scan(function (result) {
                         if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
-                        else Datas.addProductToShopping(new Product(result.text, 1, true));
+                        else Datas.addProductToShopping(new Product(result.text, true));
                     }, function (error) {
                         alert("Scanning failed: " + error);
                     }
@@ -74,7 +74,7 @@ angular.module('App.controllers', [])
             } else {
                 var result = prompt("Code EAN");
                 if ($scope.products[result] != undefined) $scope.products[result].plus();
-                else Datas.addProductToShopping(new Product(result));
+                else Datas.addProductToShopping(new Product(result, true));
             }
         }
 
@@ -95,6 +95,7 @@ angular.module('App.controllers', [])
 
     .controller('ShowProductCtrl', ['$scope', 'Datas', '$mdDialog', 'product', function ($scope, Datas, $mdDialog, product) {
         $scope.product = product;
+        $scope.inFridgeBoolean = product.shopping;
 		
 		changeLabelSwitch();
 		
@@ -113,6 +114,7 @@ angular.module('App.controllers', [])
                         });
                         Datas.removeProductFromFridge(product);
                     }
+                    $mdDialog.hide();
                 }
             } else product.plus();
         }
@@ -133,8 +135,15 @@ angular.module('App.controllers', [])
 
         $scope.onMarketChange = function() {
             product.deleteFromDb();
-            if (product.shopping) product.setShopping(true);
-            else product.setShopping(false);
+            if ($scope.inFridgeBoolean) {
+                Datas.removeProductFromFridge(product);
+                product.setShopping(true);
+                Datas.addProductToShopping(product);
+            } else {
+                Datas.removeProductFromShopping(product);
+                product.setShopping(false);
+                Datas.addProductToFridge(product);
+            }
 			changeLabelSwitch();
         };
     }]);
