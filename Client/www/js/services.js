@@ -1,14 +1,14 @@
 angular.module('App.services', [])
 
-    .factory('Datas', ['Product', 'Menu', 'Dish', '$http', 'Toast', function(Product, Menu, Dish, $http, Toast) {
+    .factory('Datas', function(Product, Menu, Dish, $http, Toast) {
         var fridge = {};
 		var shopping = {};
 		var menus = {};
 
         return {
-			getFridge: function() {
-				return $http.get(URL_SERVER + "fridge")
-					.then(function (response) {
+            init: function() {
+                $http.get(URL_SERVER + "fridge")
+                    .then(function (response) {
                         if (response.data.error) {
                             console.log(response.data.error);
                             alert(JSON.stringify(response.data.error));
@@ -18,17 +18,13 @@ angular.module('App.services', [])
                                 fridge[id] = new Product(product.id, false, product.quantity, product.name, product.image);
                             });
                         }
-						return fridge;
-					}, function () {
-					Toast.show("bug getFridge");
-				});
-			},
-            addProductToFridge: function(product) { fridge[product.id] = product; },
-            removeProductFromFridge: function(product) { delete fridge[product.id]; },
+                        return fridge;
+                    }, function () {
+                        Toast.show("bug getFridge");
+                    });
 
-            getShopping: function() {
-				return $http.get(URL_SERVER + "shopping")
-					.then(function (response) {
+                $http.get(URL_SERVER + "shopping")
+                    .then(function (response) {
                         if (response.data.error) {
                             console.log(response.data.error);
                             alert(JSON.stringify(response.data.error));
@@ -38,20 +34,25 @@ angular.module('App.services', [])
                                 shopping[id] = new Product(product.id, true, product.quantity, product.name, product.image);
                             });
                         }
-						
-						return shopping;
-					}, function () {
-					Toast.show("bug getShopping");
-				});
-			},			
+
+                        return shopping;
+                    }, function () {
+                        Toast.show("bug getShopping");
+                    });
+            },
+			getFridge: function() { return fridge; },
+            addProductToFridge: function(product) { fridge[product.id] = product; },
+            removeProductFromFridge: function(product) { delete fridge[product.id]; },
+
+            getShopping: function() { return shopping; },
             addProductToShopping: function(product) { shopping[product.id] = product; },
             removeProductFromShopping: function(product) { delete shopping[product.id]; },
 
             getMenus: function() { return menus; },
         };
-    }])
+    })
 
-    .service('Toast', ['$mdToast', function($mdToast) {
+    .service('Toast', function($mdToast) {
         this.show = function(message, time) {
             if (time == undefined) time = 1500;
             $mdToast.show(
@@ -60,9 +61,9 @@ angular.module('App.services', [])
                     .hideDelay(time)
             );
         };
-    }])
+    })
 
-    .service('DialogProduct', ['$mdDialog', function($mdDialog) {
+    .service('DialogProduct', function($mdDialog) {
         this.show = function(product, $event) {
             $mdDialog.show({
                 templateUrl: 'views/showProduct.html',
@@ -102,8 +103,23 @@ angular.module('App.services', [])
                 product.setShopping(true);
                 callback();
             });
-        }
-    }])
+        };
+
+        this.addProduct = function (callback) {
+            var code = undefined;
+
+            if (isMobile) {
+                cordova.plugins.barcodeScanner.scan(function (result) {
+                        code = result.text;
+                    }, function (error) {
+                        alert("Scanning failed: " + error);
+                    }
+                );
+            } else code = prompt("Code EAN");
+
+            if (code) callback(code);
+        };
+    })
 ;
 
 //http://www.jsoneditoronline.org/?url=http://world.openfoodfacts.org/api/v0/product/3222472863618.json

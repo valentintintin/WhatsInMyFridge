@@ -1,6 +1,8 @@
 angular.module('App.controllers', [])
 
-    .controller('AppCtrl', function ($scope, $rootScope, $state) {
+    .controller('AppCtrl', function ($scope, $rootScope, Datas) {
+        Datas.init();
+
         $rootScope.$on('$stateChangeSuccess',
             function(event, toState) {
                 $scope.currentNavItem = toState.name;
@@ -8,10 +10,8 @@ angular.module('App.controllers', [])
         )
     })
 
-    .controller('FridgeCtrl', ['$scope', 'Datas', 'Product', 'Toast', 'DialogProduct', function ($scope, Datas, Product, Toast, DialogProduct) {
-		$scope.products = Datas.getFridge().then(function(data) {
-			$scope.products = data;
-		});
+    .controller('FridgeCtrl', function ($scope, Datas, Product, DialogProduct) {
+		$scope.products = Datas.getFridge();
 		
 		$scope.$watchCollection('products', function() {
 			if ($scope.products != undefined) $scope.nbProducts = Object.keys($scope.products).length;
@@ -19,23 +19,17 @@ angular.module('App.controllers', [])
 		});
 		
         $scope.addProduct = function() {
-            if (isMobile) {
-                cordova.plugins.barcodeScanner.scan(function (result) {
-                        if (result.text.length > 0) {
-                            if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
-                            else Datas.addProductToFridge(new Product(result.text));
-                        }
-                    }, function (error) {
-                        alert("Scanning failed: " + error);
+            DialogProduct.addProduct(function (code) {
+                if ($scope.products[code] != undefined) $scope.products[code].plus();
+                else Datas.addProductToFridge(new Product(code));
+
+                var productShopping = Datas.getShopping()[code];
+                if (productShopping != undefined) {
+                    if (confirm("This product is on your shopping list, would you like to remove one ?")) {
+                        if (productShopping.minus()) Datas.removeProductFromShopping(productShopping);
                     }
-                );
-            } else {
-                var result = prompt("Code EAN");
-                if (result) {
-                    if ($scope.products[result] != undefined) $scope.products[result].plus();
-                    else Datas.addProductToFridge(new Product(result));
                 }
-            }
+            });
         }
 
         $scope.showProduct = function(product, $event) {
@@ -52,12 +46,10 @@ angular.module('App.controllers', [])
                 }
             } else product.plus();
         }
-    }])
+    })
 
-    .controller('ShoppingCtrl', ['$scope', 'Datas', 'Product', 'DialogProduct', function ($scope, Datas, Product, DialogProduct) {
-        $scope.products = Datas.getShopping().then(function(data) {
-			$scope.products = data;
-		});
+    .controller('ShoppingCtrl', function ($scope, Datas, Product, DialogProduct) {
+        $scope.products = Datas.getShopping();
 		
 		$scope.$watchCollection('products', function() {
 			if ($scope.products != undefined) $scope.nbProducts = Object.keys($scope.products).length;
@@ -65,21 +57,10 @@ angular.module('App.controllers', [])
 		});
 
         $scope.addProduct = function() {
-            if (isMobile) {
-                cordova.plugins.barcodeScanner.scan(function (result) {
-                        if ($scope.products[result.text] != undefined) $scope.products[result.text].plus();
-                        else Datas.addProductToShopping(new Product(result.text, true));
-                    }, function (error) {
-                        alert("Scanning failed: " + error);
-                    }
-                );
-            } else {
-                var result = prompt("Code EAN");
-                if (result) {
-                    if ($scope.products[result] != undefined) $scope.products[result].plus();
-                    else Datas.addProductToShopping(new Product(result, true));
-                }
-            }
+            DialogProduct.addProduct(function (code) {
+                if ($scope.products[code] != undefined) $scope.products[code].plus();
+                else Datas.addProductToShopping(new Product(code));
+            });
         }
 
         $scope.showProduct = function(product, $event) {
@@ -91,13 +72,13 @@ angular.module('App.controllers', [])
                 if (product.minus()) Datas.removeProductFromShopping(product);
             } else product.plus();
         }
-    }])
+    })
 
-    .controller('MenusCtrl', ['$scope', 'Datas', 'Product', 'Dish', function ($scope, Datas, Product, Dish) {
+    .controller('MenusCtrl', function ($scope, Datas, Product, Dish) {
         $scope.menus = Datas.getMenus();
-    }])
+    })
 
-    .controller('ShowProductCtrl', ['$scope', 'Datas', '$mdDialog', 'product', function ($scope, Datas, $mdDialog, product) {
+    .controller('ShowProductCtrl', function ($scope, Datas, $mdDialog, product) {
         $scope.product = product;
         $scope.inFridgeBoolean = product.shopping;
 		
@@ -150,4 +131,4 @@ angular.module('App.controllers', [])
             }
 			changeLabelSwitch();
         };
-    }]);
+    });
