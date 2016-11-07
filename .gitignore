@@ -3,7 +3,7 @@
 Server/js/node_modules/
 Server/js/db.db/
 
-Client/node_modules
+Client/res/
 Client/www/lib/
 Client/platforms/
 Client/plugins/
