@@ -2,6 +2,7 @@
 
 Server/js/node_modules/
 Server/js/db.db/
+Server/php/config.php
 
 Client/res/
 Client/www/lib/

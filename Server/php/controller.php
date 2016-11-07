@@ -1,5 +1,7 @@
 <?php
 
+require_once 'config.php';
+
 abstract class Controller {
     protected $db;
     protected $id = null;
@@ -9,7 +11,7 @@ abstract class Controller {
         $this->id = $id;
         $this->data = $data;
         try {
-            $this->db = new PDO('mysql:host=localhost;dbname=whatsinmyfridge', 'root', '0623270268', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+            $this->db = new PDO('mysql:host=' . $bddHost . ';dbname=' . $bddName, $bddUsername, $bddPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage();
             die();
