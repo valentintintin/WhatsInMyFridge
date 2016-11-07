@@ -4,6 +4,7 @@ angular.module('App.services', [])
         var fridge = {};
 		var shopping = {};
 		var menus = {};
+        var users = {};
 
         return {
             init: function() {
@@ -15,7 +16,7 @@ angular.module('App.services', [])
                             Toast.show("bug getFridge");
                         } else {
                             angular.forEach(response.data, function (product, id) {
-                                fridge[id] = new Product(product.id, false, product.quantity, product.name, product.image);
+                                fridge[id] = new Product(id, false, product.quantity, product.name, product.image);
                             });
                         }
                         return fridge;
@@ -31,13 +32,30 @@ angular.module('App.services', [])
                             Toast.show("bug getShopping");
                         } else {
                             angular.forEach(response.data, function (product, id) {
-                                shopping[id] = new Product(product.id, true, product.quantity, product.name, product.image);
+                                shopping[id] = new Product(id, true, product.quantity, product.name, product.image);
                             });
                         }
 
                         return shopping;
                     }, function () {
                         Toast.show("bug getShopping");
+                    });
+
+                $http.get(URL_SERVER + "user")
+                    .then(function (response) {
+                        if (response.data.error) {
+                            console.log(response.data.error);
+                            alert(JSON.stringify(response.data.error));
+                            Toast.show("bug getUser");
+                        } else {
+                            angular.forEach(response.data, function (user, id) {
+                                users[id] = user
+                            });
+                        }
+
+                        return users;
+                    }, function () {
+                        Toast.show("bug getUser");
                     });
             },
 			getFridge: function() { return fridge; },
@@ -49,6 +67,8 @@ angular.module('App.services', [])
             removeProductFromShopping: function(product) { delete shopping[product.id]; },
 
             getMenus: function() { return menus; },
+
+            getUser: function() { return users; },
         };
     })
 
@@ -110,14 +130,15 @@ angular.module('App.services', [])
 
             if (isMobile) {
                 cordova.plugins.barcodeScanner.scan(function (result) {
-                        code = result.text;
-                    }, function (error) {
-                        alert("Scanning failed: " + error);
-                    }
-                );
-            } else code = prompt("Code EAN");
-
-            if (code) callback(code);
+                    code = result.text;
+                    if (code) callback(code);
+                }, function (error) {
+                    alert("Scanning failed: " + error);
+                });
+            } else {
+                code = prompt("Code EAN");
+                if (code) callback(code);
+            }
         };
     })
 ;

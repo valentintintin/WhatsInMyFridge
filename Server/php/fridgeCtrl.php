@@ -8,15 +8,15 @@ class FridgeCtrl extends Controller {
         return $this->getSql('fridge_list_details');
     }
 
-    protected function getPrimaryKey() {
-        return $this->getFields()[0];
-    }
-
     protected function getFields() {
-        return array('product_id', 'user_id', 'quantity');
+        return array('product_id' => true, 'user_id' => true, 'quantity' => true);
     }
 
     protected function getTable() {
         return 'fridge_list';
+    }
+
+    protected function getOrderBy() {
+        return array('name ASC', 'date_added DESC');
     }
 }

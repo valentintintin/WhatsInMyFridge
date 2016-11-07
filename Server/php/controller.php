@@ -40,7 +40,13 @@ abstract class Controller {
         return json_encode($result);
     }
 
-    abstract protected function getPrimaryKey();
+    protected function getOrderBy() {
+        return array($this->getPrimaryKey());
+    }
+
+    protected function getPrimaryKey() {
+        return array_keys($this->getFields())[0];
+    }
 
     abstract protected function getFields();
 
@@ -50,6 +56,12 @@ abstract class Controller {
         if ($this->id) {
             $req .= ' WHERE ' . $this->getPrimaryKey() . ' = ?';
             $data[] = $this->id;
+        } else {
+            $req .= ' ORDER BY';
+            foreach ($this->getOrderBy() as $order) {
+                $req .= ' ' . $order . ',';
+            }
+            $req = rtrim($req, ',');
         }
         $stmt = $this->db->prepare($req);
         if ($stmt->execute($data)) {
@@ -68,7 +80,7 @@ abstract class Controller {
 
     protected function post() {
         $req = 'INSERT INTO ' . $this->getTable() . ' SET';
-        $req .= $this->generateSetSQL(true);
+        $req .= $this->generateSetSQL();
         $stmt = $this->db->prepare($req);
         if ($stmt->execute($this->data)) return true;
         else return array("error" => array('error' => $stmt->errorInfo()[2],
@@ -100,13 +112,24 @@ abstract class Controller {
     }
 
 
-    protected function generateSetSQL($withPrimaryKey = false) {
+    protected function generateSetSQL() {
         $fields = $this->getFields();
         $req = '';
         foreach ($this->data as $key => $value) {
-            if (in_array($key, $fields) || (!$withPrimaryKey && $key != $this->getPrimaryKey())) $req .= ' ' . $key . ' = :' . $key . ',';
+            if (in_array($key, $fields)) {
+                $req .= ' ' . $key . ' = :' . $key . ',';
+                unset($fields[$key]);
+            }
         }
-        $req = rtrim($req, ",");
+        if (!count($fields)) $req = rtrim($req, ",");
+        else {
+            foreach ($fields as $key => $value) {
+                if ($value) {
+                    $req .= ' ' . $key . ' = ' . $value;
+                }
+            }
+            $req = rtrim($req, ",");
+        }
         return $req;
     }
 

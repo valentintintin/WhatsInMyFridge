@@ -45,7 +45,15 @@ md-dialog md-dialog-content md-card md-card-title-text .md-subhead md-switch {
     margin: 0;
 }
 
-md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
+md-dialog md-dialog-content md-card md-card-content .card-media {
+    height: auto;
+}
+
+md-dialog md-dialog-content md-card md-card-title {
+    max-width: 300px;
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar), .md-button.md-primary.md-raised {
     color: white;
 }
 
