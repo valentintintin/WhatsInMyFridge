@@ -78,6 +78,29 @@ angular.module('App.controllers', [])
         $scope.menus = Datas.getMenus();
     })
 
+    .controller('UserCtrl', function ($scope, Datas, $http, $mdSidenav, Toast) {
+        $scope.users = Datas.getUser();
+
+        $scope.close = function() {
+            $mdSidenav('left').close();
+        };
+
+        $scope.add = function() {
+            $http.post(URL_SERVER + 'user', '{"username": "' + $scope.user.username + '", "password": "' + $scope.user.password + '"}')
+                .then(function(response) {
+                    if (response.data.error) {
+                        console.log(response.data.error);
+                        alert(JSON.stringify(response.data.error));
+                        Toast.show("bug addUser");
+                    } else {
+                        Toast.show("Added !");
+                    }
+                }, function () {
+                    Toast.show("bug addUser");
+                });
+        };
+    })
+
     .controller('ShowProductCtrl', function ($scope, Datas, $mdDialog, product) {
         $scope.product = product;
         $scope.inFridgeBoolean = product.shopping;
