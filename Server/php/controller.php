@@ -11,6 +11,7 @@ abstract class Controller {
         $this->id = $id;
         $this->data = $data;
         try {
+            global $bddHost, $bddName, $bddUsername, $bddPassword;
             $this->db = new PDO('mysql:host=' . $bddHost . ';dbname=' . $bddName, $bddUsername, $bddPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage();

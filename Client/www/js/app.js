@@ -1,3 +1,5 @@
+alert("Projet uniquement personel à l'heure actuelle !");
+
 angular.module('App', ['App.controllers', 'App.services', 'App.models', 'ui.router', 'ngMaterial'])
     .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
         $stateProvider
@@ -25,4 +27,4 @@ angular.module('App', ['App.controllers', 'App.services', 'App.models', 'ui.rout
 
 isMobile = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
 
-URL_SERVER = "http://77.204.229.132/whatsinmyfridge/";
+URL_SERVER = "http://77.204.229.132/others/whatsinmyfridge/server/";

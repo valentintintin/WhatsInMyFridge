@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "description": "Know what is in your fridge",
   "dependencies": {
-    "angular-material": "^1.1.1"
   },
   "devDependencies": {
-    "bower": "^1.3.3",
+    "gulp-useref": "^3.1.2"
   }
 }

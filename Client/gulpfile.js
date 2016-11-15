@@ -2,6 +2,7 @@
  
 var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
+var useref = require('gulp-useref');
  
 gulp.task('serve', function () {
   browserSync.init({
@@ -11,6 +12,12 @@ gulp.task('serve', function () {
   });
 
   gulp.watch("www/**/*").on('change', browserSync.reload);
+});
+
+gulp.task('build', function() {
+  return gulp.src('www/index.html')
+      .pipe(useref())
+      .pipe(gulp.dest('www/'));
 });
 
 gulp.task('default', ['serve']);

@@ -4,6 +4,7 @@ Server/js/node_modules/
 Server/js/db.db/
 Server/php/config.php
 
+Client/node_modules/
 Client/res/
 Client/www/lib/
 Client/platforms/
