@@ -1,11 +1,11 @@
 .idea/
 
-Server/js/node_modules/
-Server/js/db.db/
-Server/php/config.php
+server/js/node_modules/
+server/js/db.db/
+server/php/config.php
 
-Client/node_modules/
-Client/res/
-Client/www/lib/
-Client/platforms/
-Client/plugins/
+client/node_modules/
+client/res/
+client/www/lib/
+client/platforms/
+client/plugins/
